@@ -3,7 +3,7 @@ import {
   Request,
   Response,
 } from 'express';
-import { User } from 'src/users/entities/user.entity';
+import { User } from 'src/entities/user';
 import { UsersService } from 'src/users/users.service';
 
 import {
