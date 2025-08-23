@@ -7,12 +7,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Company } from './company';
-import { Message } from './message';
-import { Notification } from './notification';
-import { Project } from './project';
-import { ProjectDocument } from './projectDocument';
-import { SupportTicket } from './supportTicket';
+import { Company } from './company.entity';
+import { InspectionAppointment } from './inspectionAppointment.entity';
+import { Message } from './message.entity';
+import { Notification } from './notification.entity';
+import { Project } from './project.entity';
+import { ProjectDocument } from './projectDocument.entity';
+import { SupportTicket } from './supportTicket.entity';
 
 @Entity()
 export class User {
@@ -63,4 +64,7 @@ export class User {
 
   @OneToMany(() => Notification, (notification) => notification.user)
   notifications: Notification[];
+
+  @OneToMany(() => InspectionAppointment, (inspection) => inspection.engineer)
+  inspections: InspectionAppointment[];
 }

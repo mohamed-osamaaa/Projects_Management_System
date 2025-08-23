@@ -1,5 +1,4 @@
 import {
-  Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
@@ -8,16 +7,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Offer } from './offer';
+import { Offer } from './offer.entity';
 
 @Entity('orders')
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ type: 'text', nullable: true })
-  contractDetails: string;
-
+  
   @OneToOne(() => Offer, (offer) => offer.order, { onDelete: 'CASCADE' })
   @JoinColumn()
   offer: Offer;

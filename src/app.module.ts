@@ -24,7 +24,10 @@ import {
     AuthModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    CurrentUserMiddleware
+  ],
 })
 
 export class AppModule {

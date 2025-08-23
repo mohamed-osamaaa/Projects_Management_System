@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { User } from './user';
+import { User } from './user.entity';
 
 @Entity()
 export class SupportTicket {
@@ -33,5 +33,5 @@ export class SupportTicket {
   user: User;
 
   @ManyToOne(() => User, { nullable: true })
-  assignedTo: User; // admin handling the ticket
+  assignedTo: User; // customer support handling the ticket
 }

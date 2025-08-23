@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Payment } from './payment';
-import { Project } from './project';
+import { Payment } from './payment.entity';
+import { Project } from './project.entity';
 
 @Entity()
 export class Milestone {
@@ -24,7 +24,7 @@ export class Milestone {
   @Column({
     type: 'enum',
     enum: MilestoneStatus,
-    default: MilestoneStatus.PENDING,
+    default: MilestoneStatus.DELAYED,
   })
   status: MilestoneStatus;
 

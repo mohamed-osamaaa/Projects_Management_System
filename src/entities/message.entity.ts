@@ -5,8 +5,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Chat } from './chat';
-import { User } from './user';
+import { Chat } from './chat.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Message {

@@ -6,9 +6,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Company } from './company';
-import { Project } from './project';
-import { User } from './user';
+import { Company } from './company.entity';
+import { Project } from './project.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class InspectionAppointment {

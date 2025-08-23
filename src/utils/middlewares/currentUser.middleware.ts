@@ -3,14 +3,15 @@ import {
   Request,
   Response,
 } from 'express';
-import { User } from 'src/entities/user';
-import { UsersService } from 'src/users/users.service';
+import { User } from 'src/entities/user.entity';
 
 import {
   Injectable,
   NestMiddleware,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+
+import { AuthService } from '../../auth/auth.service';
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -19,13 +20,13 @@ declare module 'express-serve-static-core' {
 }
 
 interface JwtPayload {
-  id: string;
+  id: number;
 }
 
 @Injectable()
 export class CurrentUserMiddleware implements NestMiddleware {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -47,7 +48,7 @@ export class CurrentUserMiddleware implements NestMiddleware {
         { secret: process.env.ACCESS_TOKEN_SECRET_KEY },
       );
 
-      const user = await this.usersService.findOneById(id);
+      const user = await this.authService.findOneById(id);
       req.currentUser = user ?? null;
     } catch (err) {
       console.error('Token verification failed:', err.message);

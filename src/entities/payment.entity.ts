@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Milestone } from './milestone';
+import { Milestone } from './milestone.entity';
 
 @Entity('payments')
 export class Payment {
@@ -21,7 +21,7 @@ export class Payment {
   @Column({
     type: 'enum',
     enum: PaymentStatus,
-    default: PaymentStatus.DELAYED,
+    default: PaymentStatus.PENDING,
   })
   status: PaymentStatus;
 

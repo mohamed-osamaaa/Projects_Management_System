@@ -6,14 +6,14 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Chat } from './chat';
-import { InspectionAppointment } from './inspectionAppointment';
-import { Milestone } from './milestone';
-import { Offer } from './offer';
-import { ProjectDocument } from './projectDocument';
-import { Service } from './service';
-import { Stage } from './stage';
-import { User } from './user';
+import { Chat } from './chat.entity';
+import { InspectionAppointment } from './inspectionAppointment.entity';
+import { Milestone } from './milestone.entity';
+import { Offer } from './offer.entity';
+import { ProjectDocument } from './projectDocument.entity';
+import { Service } from './service.entity';
+import { Stage } from './stage.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Project {

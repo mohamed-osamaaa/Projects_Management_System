@@ -5,10 +5,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Project } from './project';
+import { Project } from './project.entity';
 
 @Entity()
-export class Stage {
+export class Service {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,6 +18,6 @@ export class Stage {
   @Column("text")
   description: string;
 
-  @ManyToOne(() => Project, (project) => project.stages, { onDelete: "CASCADE" })
+  @ManyToOne(() => Project, (project) => project.services, { onDelete: "CASCADE" })
   project: Project;
 }

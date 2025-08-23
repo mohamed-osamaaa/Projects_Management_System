@@ -5,8 +5,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Offer } from './offer';
-import { User } from './user';
+import { Offer } from './offer.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Company {

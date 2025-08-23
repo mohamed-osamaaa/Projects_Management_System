@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Company } from './company';
-import { Order } from './order';
-import { Project } from './project';
+import { Company } from './company.entity';
+import { Order } from './order.entity';
+import { Project } from './project.entity';
 
 @Entity()
 export class Offer {
