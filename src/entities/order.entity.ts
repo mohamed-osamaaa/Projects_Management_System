@@ -11,9 +11,9 @@ import { Offer } from './offer.entity';
 
 @Entity('orders')
 export class Order {
-  @PrimaryGeneratedColumn()
-  id: number;
-  
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @OneToOne(() => Offer, (offer) => offer.order, { onDelete: 'CASCADE' })
   @JoinColumn()
   offer: Offer;

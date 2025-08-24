@@ -12,8 +12,8 @@ import { User } from './user.entity';
 
 @Entity()
 export class InspectionAppointment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   date: Date;

@@ -10,8 +10,8 @@ import { Project } from './project.entity';
 
 @Entity()
 export class Chat {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => Project, (project) => project.chats)
   project: Project;

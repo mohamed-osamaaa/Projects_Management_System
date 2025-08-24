@@ -1,0 +1,26 @@
+meta {
+  name: register
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5030/auth/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Mohamed Osama",
+    "email": "mohamedOsama@example.com",
+    "password": "123456",
+    "phone": "01012345678",
+    "address": "Cairo, Egypt"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,28 @@
+meta {
+  name: updateProfile
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:5030/auth/profile
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI5YTYyNTI4LTk4YWUtNGM0OS1iMmM5LTEzYTM5ZjdhNTUyYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTU5NjE2MjUsImV4cCI6MTc1NjA0ODAyNX0.61AJCsn86Awyn9zQk8v3SU2Jr-FODVcqiO76sQsO3TM
+}
+
+body:json {
+  {
+    "name": "Mohamed Osama Updated",
+    "phone": "01198765432",
+    "address": "Giza, Egypt"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

@@ -10,8 +10,8 @@ import { User } from './user.entity';
 
 @Entity()
 export class Message {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column("text")
   content: string;

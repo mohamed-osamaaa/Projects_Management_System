@@ -9,8 +9,8 @@ import { Project } from './project.entity';
 
 @Entity()
 export class Stage {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;

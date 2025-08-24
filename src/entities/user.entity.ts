@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { UserRole } from 'src/utils/enums/userRoles.enum';
 import {
   Column,
@@ -17,8 +18,8 @@ import { SupportTicket } from './supportTicket.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
@@ -26,6 +27,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
 
@@ -37,7 +39,8 @@ export class User {
 
   @Column({
     type: "enum",
-    enum: UserRole
+    enum: UserRole,
+    default: UserRole.CLIENT
   })
   role: UserRole;
 

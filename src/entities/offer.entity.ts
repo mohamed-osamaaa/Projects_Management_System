@@ -13,8 +13,8 @@ import { Project } from './project.entity';
 
 @Entity()
 export class Offer {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   price: number;

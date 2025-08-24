@@ -1,12 +1,11 @@
 import {
   IsEmail,
-  IsIn,
   IsNotEmpty,
   IsOptional,
   IsString,
+  Matches,
   MinLength,
 } from 'class-validator';
-import { UserRole } from 'src/utils/enums/userRoles.enum';
 
 export class RegisterUserDto {
   @IsString()
@@ -17,7 +16,12 @@ export class RegisterUserDto {
   email: string;
 
   @IsString()
-  @MinLength(6, { message: 'Password must be at least 6 characters long' })
+  @MinLength(8, { message: 'Password must be at least 8 characters long' })
+  @Matches(/(?=.*[a-z])/, { message: 'Password must contain at least one lowercase letter' })
+  @Matches(/(?=.*[A-Z])/, { message: 'Password must contain at least one uppercase letter' })
+  @Matches(/(?=.*\d)/, { message: 'Password must contain at least one number' })
+  @Matches(/(?=.*[@$!%*?&])/,
+    { message: 'Password must contain at least one special character (@$!%*?&)' })
   password: string;
 
   @IsOptional()
@@ -27,15 +31,4 @@ export class RegisterUserDto {
   @IsOptional()
   @IsString()
   address?: string;
-
-  @IsIn(
-    [
-      UserRole.CLIENT,
-      UserRole.COMPANY,
-      UserRole.ENGINEER,
-      UserRole.CUSTOMER_SERVICE,
-    ],
-    { message: 'Role must be one of: client, company, engineer, customer_service' },
-  )
-  role: UserRole;
 }

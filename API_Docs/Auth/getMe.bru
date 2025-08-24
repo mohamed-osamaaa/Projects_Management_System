@@ -1,0 +1,31 @@
+meta {
+  name: getMe
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:5030/auth/me
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI5YTYyNTI4LTk4YWUtNGM0OS1iMmM5LTEzYTM5ZjdhNTUyYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTU5NjE2MjUsImV4cCI6MTc1NjA0ODAyNX0.61AJCsn86Awyn9zQk8v3SU2Jr-FODVcqiO76sQsO3TM
+}
+
+body:json {
+  {
+  //   "id": 1,
+  //   "name": "Mohamed Osama",
+  //   "email": "mohamedOsama@example.com",
+  //   "role": "client",
+    "phone": "01012345678",
+    "address": "Cairo, Egypt"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

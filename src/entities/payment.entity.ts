@@ -12,8 +12,8 @@ import { Milestone } from './milestone.entity';
 
 @Entity('payments')
 export class Payment {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;

@@ -12,8 +12,8 @@ import { Project } from './project.entity';
 
 @Entity()
 export class Milestone {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;

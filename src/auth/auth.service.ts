@@ -49,19 +49,19 @@ export class AuthService {
     const payload = { id: user.id, role: user.role };
     const token = await this.jwtService.signAsync(payload, {
       secret: process.env.ACCESS_TOKEN_SECRET_KEY,
-      expiresIn: '1h',
+      expiresIn: '24h',
     });
 
     return { accessToken: token, user };
   }
 
-  async getMe(userId: number) {
+  async getMe(userId: string) {
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
-  async updateProfile(userId: number, dto: UpdateProfileDto): Promise<User> {
+  async updateProfile(userId: string, dto: UpdateProfileDto): Promise<User> {
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
@@ -70,7 +70,7 @@ export class AuthService {
   }
 
 
-  async findOneById(id: number) {
+  async findOneById(id: string) {
     return this.usersRepository.findOne({ where: { id } });
   }
 }

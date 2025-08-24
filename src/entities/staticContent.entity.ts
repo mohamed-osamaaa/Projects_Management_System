@@ -6,8 +6,8 @@ import {
 
 @Entity()
 export class StaticContent {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   type: string; // e.g. "terms", "about", "faq"

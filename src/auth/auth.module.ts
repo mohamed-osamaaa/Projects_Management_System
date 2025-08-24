@@ -12,8 +12,8 @@ import { AuthService } from './auth.service';
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       secret: process.env.ACCESS_TOKEN_SECRET_KEY,
-      signOptions: { expiresIn: '1h' },
-    }), 
+      signOptions: { expiresIn: '24h' },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService],

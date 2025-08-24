@@ -20,7 +20,7 @@ declare module 'express-serve-static-core' {
 }
 
 interface JwtPayload {
-  id: number;
+  id: string;
 }
 
 @Injectable()
