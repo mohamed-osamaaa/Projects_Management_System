@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import {
   ConflictException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -24,53 +25,75 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterUserDto): Promise<User> {
-    const existing = await this.usersRepository.findOne({ where: { email: dto.email } });
-    if (existing) {
-      throw new ConflictException('Email already registered');
+    try {
+      const existing = await this.usersRepository.findOne({ where: { email: dto.email } });
+      if (existing) {
+        throw new ConflictException('Email already registered');
+      }
+
+      const hashedPassword = await bcrypt.hash(dto.password, 10);
+
+      const user = this.usersRepository.create({
+        ...dto,
+        password: hashedPassword,
+      });
+
+      return await this.usersRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to register user');
     }
-
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
-
-    const user = this.usersRepository.create({
-      ...dto,
-      password: hashedPassword,
-    });
-
-    return this.usersRepository.save(user);
   }
 
   async login(dto: LoginDto) {
-    const user = await this.usersRepository.findOne({ where: { email: dto.email } });
-    if (!user) throw new UnauthorizedException('Invalid credentials');
+    try {
+      const user = await this.usersRepository.findOne({ where: { email: dto.email } });
+      if (!user) throw new UnauthorizedException('Invalid credentials');
 
-    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
-    if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+      const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+      if (!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
 
-    const payload = { id: user.id, role: user.role };
-    const token = await this.jwtService.signAsync(payload, {
-      secret: process.env.ACCESS_TOKEN_SECRET_KEY,
-      expiresIn: '24h',
-    });
+      const payload = { id: user.id, role: user.role };
+      const token = await this.jwtService.signAsync(payload, {
+        secret: process.env.ACCESS_TOKEN_SECRET_KEY,
+        expiresIn: '24h',
+      });
 
-    return { accessToken: token, user };
+      return { accessToken: token, user };
+    } catch (error) {
+      if (error instanceof UnauthorizedException) throw error;
+      throw new InternalServerErrorException('Failed to login');
+    }
   }
 
   async getMe(userId: string) {
-    const user = await this.usersRepository.findOne({ where: { id: userId } });
-    if (!user) throw new NotFoundException('User not found');
-    return user;
+    try {
+      const user = await this.usersRepository.findOne({ where: { id: userId } });
+      if (!user) throw new NotFoundException('User not found');
+      return user;
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Failed to fetch user profile');
+    }
   }
 
   async updateProfile(userId: string, dto: UpdateProfileDto): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { id: userId } });
-    if (!user) throw new NotFoundException('User not found');
+    try {
+      const user = await this.usersRepository.findOne({ where: { id: userId } });
+      if (!user) throw new NotFoundException('User not found');
 
-    Object.assign(user, dto);
-    return this.usersRepository.save(user);
+      Object.assign(user, dto);
+      return await this.usersRepository.save(user);
+    } catch (error) {
+      if (error instanceof NotFoundException) throw error;
+      throw new InternalServerErrorException('Failed to update profile');
+    }
   }
 
-
   async findOneById(id: string) {
-    return this.usersRepository.findOne({ where: { id } });
+    try {
+      return await this.usersRepository.findOne({ where: { id } });
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to fetch user by id');
+    }
   }
 }

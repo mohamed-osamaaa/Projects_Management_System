@@ -1,0 +1,24 @@
+meta {
+  name: Get All Users
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:5030/users?page=1&limit=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 1
+  limit: 10
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI5YTYyNTI4LTk4YWUtNGM0OS1iMmM5LTEzYTM5ZjdhNTUyYiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjAzMjA4NiwiZXhwIjoxNzU2MTE4NDg2fQ.U72SFRJLlLh3xhaZryqSbdYZKAQIe96J_gLXMest_DU
+}
+
+settings {
+  encodeUrl: true
+}

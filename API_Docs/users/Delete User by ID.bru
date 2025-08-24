@@ -1,0 +1,19 @@
+meta {
+  name: Delete User by ID
+  type: http
+  seq: 3
+}
+
+delete {
+  url: http://localhost:5030/users/a89bb109-4bb8-4b84-953a-384d92a8e57b
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI5YTYyNTI4LTk4YWUtNGM0OS1iMmM5LTEzYTM5ZjdhNTUyYiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjAxNTY0NCwiZXhwIjoxNzU2MTAyMDQ0fQ.pr3NY1HBXTJ3T73qfGEP-oxoGF7LplJ6HCYeOjhXZik
+}
+
+settings {
+  encodeUrl: true
+}

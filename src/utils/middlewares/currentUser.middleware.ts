@@ -31,11 +31,20 @@ export class CurrentUserMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const authHeader = Array.isArray(req.headers.authorization)
-      ? req.headers.authorization[0]
-      : req.headers.authorization;
+    const authHeaderRaw =
+      (req.headers['authorization'] as string) ||
+      (req.headers['Authorization'] as string);
 
-    if (!authHeader?.startsWith('Bearer ')) {
+    const authHeader = Array.isArray(authHeaderRaw)
+      ? authHeaderRaw[0]
+      : authHeaderRaw;
+
+    if (!authHeader) {
+      req.currentUser = null;
+      return next();
+    }
+
+    if (!authHeader.startsWith('Bearer ')) {
       req.currentUser = null;
       return next();
     }
@@ -49,9 +58,10 @@ export class CurrentUserMiddleware implements NestMiddleware {
       );
 
       const user = await this.authService.findOneById(id);
+
       req.currentUser = user ?? null;
-    } catch (err) {
-      console.error('Token verification failed:', err.message);
+    } catch (err: any) {
+      console.log('Token verification failed:', err.message);
       req.currentUser = null;
     }
 

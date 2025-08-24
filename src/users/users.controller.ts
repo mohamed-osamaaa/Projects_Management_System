@@ -22,6 +22,13 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+
+  @UseGuards(AuthenticationGuard)
+  @Get('search')
+  async searchByName(@Query('name') name: string): Promise<User[]> {
+    return this.usersService.searchByName(name);
+  }
+
   @UseGuards(AuthenticationGuard,AuthorizeGuard([UserRole.ADMIN]))
   @Get()
   async findAll(
@@ -57,10 +64,4 @@ export class UsersController {
     return this.usersService.toggleVerificationBadge(id, dto);
   }
 
-
-  @UseGuards(AuthenticationGuard)
-  @Get('search')
-  async searchByName(@Query('name') name: string): Promise<User[]> {
-    return this.usersService.searchByName(name);
-  }
 }
