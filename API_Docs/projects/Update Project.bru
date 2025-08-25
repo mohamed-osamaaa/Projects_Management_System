@@ -1,0 +1,26 @@
+meta {
+  name: Update Project
+  type: http
+  seq: 3
+}
+
+patch {
+  url: http://localhost:5030/projects/03e2a267-203b-43ca-88d2-f177716dbb3b
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzMyZDJkLWFkNjktNDFlNy05YjRiLTc5NWU5NTAwNzE3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjExODQzMywiZXhwIjoxNzU2MjA0ODMzfQ.tcLqWajmQNYxFrUNgtXiuQzTj-uDqRnxRNOo3Tf5XWw
+}
+
+body:json {
+  {
+    "title": "Updated AI Project",
+    "totalBudget": 15000
+  }
+}
+
+settings {
+  encodeUrl: true
+}

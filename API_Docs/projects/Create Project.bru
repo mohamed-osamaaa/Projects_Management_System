@@ -1,0 +1,29 @@
+meta {
+  name: Create Project
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5030/projects
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM0ZmE0MTYzLWUzYTgtNDI0ZC1iYzEzLWYxMmU5OTRhY2JmMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYxNDU4ODYsImV4cCI6MTc1NjIzMjI4Nn0.0UYve7L80FpnwIGtTY8IEZr7zbcXjyidsy6kfQ4N7ho
+}
+
+body:json {
+  {
+    "title": "AI Platform",
+    "description": "Build an AI-powered system",
+    "totalBudget": 12000,
+    "deadline": "2025-12-30"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

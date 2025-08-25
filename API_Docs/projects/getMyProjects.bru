@@ -1,0 +1,19 @@
+meta {
+  name: getMyProjects
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:5030/projects/my-projects
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM0ZmE0MTYzLWUzYTgtNDI0ZC1iYzEzLWYxMmU5OTRhY2JmMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYxNTA2NDEsImV4cCI6MTc1NjIzNzA0MX0.ZpRKYTJWkLFCSxXSQyg_MUke3bAhECynkczB1_0B424
+}
+
+settings {
+  encodeUrl: true
+}

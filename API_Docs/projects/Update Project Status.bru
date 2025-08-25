@@ -1,0 +1,25 @@
+meta {
+  name: Update Project Status
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:5030/projects/03e2a267-203b-43ca-88d2-f177716dbb3b/status
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzMyZDJkLWFkNjktNDFlNy05YjRiLTc5NWU5NTAwNzE3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjExODQzMywiZXhwIjoxNzU2MjA0ODMzfQ.tcLqWajmQNYxFrUNgtXiuQzTj-uDqRnxRNOo3Tf5XWw
+}
+
+body:json {
+  {
+    "status": "completed"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

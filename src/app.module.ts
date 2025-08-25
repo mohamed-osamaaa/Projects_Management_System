@@ -17,6 +17,7 @@ import {
   CurrentUserMiddleware,
 } from './utils/middlewares/currentUser.middleware';
 import { CompaniesModule } from './companies/companies.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { CompaniesModule } from './companies/companies.module';
     TypeOrmModule.forRoot(dataSourceOptions),
     AuthModule,
     UsersModule,
-    CompaniesModule
+    CompaniesModule,
+    ProjectsModule
   ],
   controllers: [AppController],
   providers: [
