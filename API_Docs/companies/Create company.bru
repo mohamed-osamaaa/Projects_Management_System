@@ -1,0 +1,28 @@
+meta {
+  name: Create company
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5030/companies
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Tech Company",
+    "description": "Software development services",
+    "address": "Cairo, Egypt",
+    "phone": "01012345678",
+    "paymentAccountId": "ACC123456",
+    "userName": "Company Owner",
+    "userEmail": "owner@company.com",
+    "userPassword": "123456"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

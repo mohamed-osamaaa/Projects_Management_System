@@ -1,7 +1,9 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -28,8 +30,12 @@ export class Company {
   @Column()
   paymentAccountId: string;
 
+  @OneToOne(() => User, { cascade: true, onDelete: 'CASCADE' })
+  @JoinColumn()
+  owner: User;
+
   @OneToMany(() => User, (user) => user.company)
-  users: User[];
+  engineers: User[];
 
   @OneToMany(() => Offer, (offer) => offer.company)
   offers: Offer[];

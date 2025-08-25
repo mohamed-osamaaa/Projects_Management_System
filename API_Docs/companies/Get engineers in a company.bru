@@ -1,0 +1,19 @@
+meta {
+  name: Get engineers in a company
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:5030/companies/65b3c23b-b995-4fd7-a5bb-1db4d517715b/engineers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzMyZDJkLWFkNjktNDFlNy05YjRiLTc5NWU5NTAwNzE3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjExNzczNCwiZXhwIjoxNzU2MjA0MTM0fQ.1aNRGMGm6ck3TBbQ0TPRzN9QunW0MG8JW29rVHgVi-s
+}
+
+settings {
+  encodeUrl: true
+}

@@ -17,7 +17,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('register')
   register(@Body() dto: RegisterUserDto) {
@@ -29,15 +29,15 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-  @Get('me')
   @UseGuards(AuthenticationGuard)
+  @Get('me')
   me(@Req() req) {
     return this.authService.getMe(req.currentUser.id);
   }
 
-  @Patch('profile')
   @UseGuards(AuthenticationGuard)
+  @Patch('profile')
   updateProfile(@Req() req, @Body() dto: UpdateProfileDto) {
-    return this.authService.updateProfile(req.currentUser.id, dto);
+    return this.authService.updateProfile(req.currentUser.id, dto, req.currentUser);
   }
 }

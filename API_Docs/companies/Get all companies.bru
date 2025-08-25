@@ -1,0 +1,19 @@
+meta {
+  name: Get all companies
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:5030/companies
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzMyZDJkLWFkNjktNDFlNy05YjRiLTc5NWU5NTAwNzE3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjExODQzMywiZXhwIjoxNzU2MjA0ODMzfQ.tcLqWajmQNYxFrUNgtXiuQzTj-uDqRnxRNOo3Tf5XWw
+}
+
+settings {
+  encodeUrl: true
+}

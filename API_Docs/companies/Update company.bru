@@ -1,0 +1,26 @@
+meta {
+  name: Update company
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:5030/companies/ec22ae6d-5c53-4351-8a75-5932789908b7
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImRkYzMyZDJkLWFkNjktNDFlNy05YjRiLTc5NWU5NTAwNzE3YyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjExODQzMywiZXhwIjoxNzU2MjA0ODMzfQ.tcLqWajmQNYxFrUNgtXiuQzTj-uDqRnxRNOo3Tf5XWw
+}
+
+body:json {
+  {
+    "name": "Updated Company Name",
+    "phone": "01198765432"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

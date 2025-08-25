@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -22,7 +23,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async register(dto: RegisterUserDto): Promise<User> {
     try {
@@ -76,18 +77,23 @@ export class AuthService {
     }
   }
 
-  async updateProfile(userId: string, dto: UpdateProfileDto): Promise<User> {
+  async updateProfile(userId: string, dto: UpdateProfileDto, currentUser: User): Promise<User> {
     try {
       const user = await this.usersRepository.findOne({ where: { id: userId } });
       if (!user) throw new NotFoundException('User not found');
 
+      if (currentUser.id !== user.id) {
+        throw new ForbiddenException("You can only update your own profile");
+      }
+
       Object.assign(user, dto);
       return await this.usersRepository.save(user);
     } catch (error) {
-      if (error instanceof NotFoundException) throw error;
+      if (error instanceof NotFoundException || error instanceof ForbiddenException) throw error;
       throw new InternalServerErrorException('Failed to update profile');
     }
   }
+
 
   async findOneById(id: string) {
     try {

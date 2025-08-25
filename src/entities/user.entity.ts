@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -50,7 +51,13 @@ export class User {
   })
   verificationBadge: boolean;
 
-  @ManyToOne(() => Company, (company) => company.users, { nullable: true })
+  @OneToOne(() => Company, (company) => company.owner)
+  ownedCompany: Company;
+
+  @ManyToOne(() => Company, (company) => company.engineers, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   company: Company;
 
   @OneToMany(() => Project, (project) => project.client)
