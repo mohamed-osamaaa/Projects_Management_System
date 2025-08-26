@@ -12,8 +12,6 @@ import { InspectionAppointment } from './inspectionAppointment.entity';
 import { Milestone } from './milestone.entity';
 import { Offer } from './offer.entity';
 import { ProjectDocument } from './projectDocument.entity';
-import { Service } from './service.entity';
-import { Stage } from './stage.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -57,10 +55,4 @@ export class Project {
 
   @OneToMany(() => ProjectDocument, (doc) => doc.project)
   documents: ProjectDocument[];
-
-  @OneToMany(() => Stage, (stage) => stage.project)
-  stages: Stage[];
-
-  @OneToMany(() => Service, (service) => service.project)
-  services: Service[];
 }

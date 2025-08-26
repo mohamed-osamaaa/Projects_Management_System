@@ -1,4 +1,5 @@
 import { MilestoneStatus } from 'src/utils/enums/milestoneStatus.enum';
+import { PaymentStatus } from 'src/utils/enums/paymentStatus.enum';
 import {
   Column,
   Entity,
@@ -7,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { Offer } from './offer.entity';
 import { Payment } from './payment.entity';
 import { Project } from './project.entity';
 
@@ -18,15 +20,22 @@ export class Milestone {
   @Column()
   title: string;
 
-  @Column()
-  dueDate: Date;
+  @Column("text")
+  description: string;
 
   @Column({
     type: 'enum',
     enum: MilestoneStatus,
-    default: MilestoneStatus.DELAYED,
+    default: MilestoneStatus.PENDING,
   })
-  status: MilestoneStatus;
+  milestoneStatus: MilestoneStatus;
+
+  @Column({
+    type: 'enum',
+    enum: PaymentStatus,
+    default: PaymentStatus.DELAYED,
+  })
+  paymentStatus: PaymentStatus;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
@@ -36,4 +45,7 @@ export class Milestone {
 
   @OneToMany(() => Payment, (payment) => payment.milestone)
   payments: Payment[];
+
+  @ManyToOne(() => Offer, (offer) => offer.milestones)
+  offer: Offer;
 }

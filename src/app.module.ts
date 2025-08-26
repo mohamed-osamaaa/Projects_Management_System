@@ -12,13 +12,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CompaniesModule } from './companies/companies.module';
+import { OffersModule } from './offers/offers.module';
+import { ProjectsModule } from './projects/projects.module';
 import { UsersModule } from './users/users.module';
 import {
   CurrentUserMiddleware,
 } from './utils/middlewares/currentUser.middleware';
-import { CompaniesModule } from './companies/companies.module';
-import { ProjectsModule } from './projects/projects.module';
-import { OffersModule } from './offers/offers.module';
 
 @Module({
   imports: [

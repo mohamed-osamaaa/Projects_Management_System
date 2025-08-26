@@ -13,6 +13,7 @@ import { Company } from './company.entity';
 import { InspectionAppointment } from './inspectionAppointment.entity';
 import { Message } from './message.entity';
 import { Notification } from './notification.entity';
+import { Payment } from './payment.entity';
 import { Project } from './project.entity';
 import { ProjectDocument } from './projectDocument.entity';
 import { SupportTicket } from './supportTicket.entity';
@@ -77,4 +78,8 @@ export class User {
 
   @OneToMany(() => InspectionAppointment, (inspection) => inspection.engineer)
   inspections: InspectionAppointment[];
+
+  @OneToMany(() => Payment, (payment) => payment.paymentBy, { nullable: false })
+  paymentsMade: Payment[];
+
 }

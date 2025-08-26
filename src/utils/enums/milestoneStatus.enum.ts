@@ -1,4 +1,6 @@
 export enum MilestoneStatus {
-  PAID = "paid",
-  DELAYED = "delayed"
+  PENDING = 'pending',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  DELAYED = 'delayed',
 }

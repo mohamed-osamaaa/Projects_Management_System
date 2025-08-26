@@ -3,21 +3,18 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Company } from './company.entity';
-import { Order } from './order.entity';
+import { Milestone } from './milestone.entity';
 import { Project } from './project.entity';
 
 @Entity()
 export class Offer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  price: number;
 
   @Column("text")
   description: string;
@@ -35,6 +32,6 @@ export class Offer {
   @ManyToOne(() => Company, (company) => company.offers)
   company: Company;
 
-  @OneToOne(() => Order, (order) => order.offer)
-  order: Order;
+  @OneToMany(() => Milestone, (milestone) => milestone.offer)
+  milestones: Milestone[];
 }

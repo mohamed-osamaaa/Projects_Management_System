@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import { Offer } from './offer.entity';
+import { Payment } from './payment.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -39,4 +40,7 @@ export class Company {
 
   @OneToMany(() => Offer, (offer) => offer.company)
   offers: Offer[];
+
+  @OneToMany(() => Payment, (payment) => payment.paymentTo, { nullable: false })
+  paymentsReceived: Payment[];
 }
