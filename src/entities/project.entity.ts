@@ -1,3 +1,4 @@
+import { ProjectStatus } from 'src/utils/enums/projectStatus.enum';
 import {
   Column,
   Entity,
@@ -23,11 +24,15 @@ export class Project {
   @Column()
   title: string;
 
-  @Column("text")
+  @Column('text')
   description: string;
 
-  @Column({ default: "pending" })
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: ProjectStatus,
+    default: ProjectStatus.PENDING,
+  })
+  status: ProjectStatus;
 
   @Column({ type: 'timestamp', nullable: true })
   deadline: Date;

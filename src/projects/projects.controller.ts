@@ -17,6 +17,7 @@ import {
 } from '@nestjs/common';
 
 import { CreateProjectDto } from './dto/create-project.dto';
+import { RepublishProjectDto } from './dto/republish-project.dto';
 import { UpdateProjectStatusDto } from './dto/update-project-status.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { ProjectsService } from './projects.service';
@@ -104,5 +105,15 @@ export class ProjectsController {
     @Body() dto: UpdateProjectStatusDto
   ): Promise<Project> {
     return this.projectsService.updateStatus(id, dto);
+  }
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.CLIENT]))
+  @Patch(':projectId/republish')
+  async republishProject(
+    @Param('projectId') projectId: string,
+    @Body() dto: RepublishProjectDto,
+    @Req() req,
+  ): Promise<Project> {
+    return this.projectsService.republish(projectId, req.currentUser.id, dto.deadline);
   }
 }

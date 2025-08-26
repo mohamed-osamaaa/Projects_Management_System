@@ -1,0 +1,27 @@
+meta {
+  name: Create offer
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5030/offers/projects/fbbb5cf4-5cbe-4070-90c9-d4a5daf2d410
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjOWJiOThiLTU1OTktNDhmOS1iMjQ2LWM0ODQ3ZDU0OGZkMCIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzU2MTk3MzgwLCJleHAiOjE3NTYyODM3ODB9.Lgmnr9TmQEenTHcccJQ_2w6omra3VHL-mTUK-1T7Xbw
+}
+
+body:json {
+  {
+    "price": 5000,
+    "description": "We can finish in 3 weeks"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

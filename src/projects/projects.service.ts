@@ -1,10 +1,16 @@
 import { Project } from 'src/entities/project.entity';
+import { ProjectStatus } from 'src/utils/enums/projectStatus.enum';
+import {
+    checkProjectExpired,
+} from 'src/utils/helpers/checkProjectExpired.helpers';
 import {
     Between,
     Repository,
 } from 'typeorm';
 
 import {
+    BadRequestException,
+    ForbiddenException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -47,12 +53,15 @@ export class ProjectsService {
             if (filters?.status) where.status = filters.status;
             if (filters?.clientId) where.client = { id: filters.clientId };
             if (filters?.startDate && filters?.endDate) {
-                where.deadline = Between(new Date(filters.startDate), new Date(filters.endDate));
+                where.deadline = Between(
+                    new Date(filters.startDate),
+                    new Date(filters.endDate),
+                );
             }
 
             return this.projectRepo.find({
                 where,
-                // relations: ['client', 'offers', 'milestones', 'stages'],
+                relations: ['client', 'offers', 'milestones', 'stages'],
             });
         } catch (error) {
             throw new InternalServerErrorException(error.message);
@@ -60,31 +69,30 @@ export class ProjectsService {
     }
 
     async findOne(id: string): Promise<Project> {
-        try {
-            const project = await this.projectRepo.findOne({
-                where: { id },
-                relations: ['client', 'offers', 'milestones', 'stages'],
-            });
-            if (!project) throw new NotFoundException(`Project ${id} not found`);
-            return project;
-        } catch (error) {
-            throw new InternalServerErrorException(error.message);
-        }
+        const project = await this.projectRepo.findOne({
+            where: { id },
+            relations: ['client', 'offers', 'milestones', 'stages'],
+        });
+        if (!project) throw new NotFoundException(`Project ${id} not found`);
+        return project;
     }
 
     async update(id: string, dto: UpdateProjectDto): Promise<Project> {
-        try {
-            const project = await this.findOne(id);
-            Object.assign(project, dto);
-            return this.projectRepo.save(project);
-        } catch (error) {
-            throw new InternalServerErrorException(error.message);
-        }
+        await checkProjectExpired(this.projectRepo, id);
+
+        const project = await this.findOne(id);
+        Object.assign(project, dto);
+        return this.projectRepo.save(project);
     }
 
     async updateStatus(id: string, dto: UpdateProjectStatusDto): Promise<Project> {
         try {
             const project = await this.findOne(id);
+
+            if (!Object.values(ProjectStatus).includes(dto.status)) {
+                throw new BadRequestException('Invalid project status');
+            }
+
             project.status = dto.status;
             return this.projectRepo.save(project);
         } catch (error) {
@@ -93,22 +101,16 @@ export class ProjectsService {
     }
 
     async findClientProjects(clientId: string): Promise<Project[]> {
-        try {
-            return this.projectRepo.find({ where: { client: { id: clientId } } });
-        } catch (error) {
-            throw new InternalServerErrorException(error.message);
-        }
+        return this.projectRepo.find({
+            where: { client: { id: clientId } },
+        });
     }
 
     async findCompanyProjects(companyId: string): Promise<Project[]> {
-        try {
-            return this.projectRepo.find({
-                relations: ['offers'],
-                where: { offers: { company: { id: companyId } } },
-            });
-        } catch (error) {
-            throw new InternalServerErrorException(error.message);
-        }
+        return this.projectRepo.find({
+            relations: ['offers'],
+            where: { offers: { company: { id: companyId } } },
+        });
     }
 
     async findEngineerProjects(engineerId: string): Promise<Project[]> {
@@ -116,5 +118,33 @@ export class ProjectsService {
             relations: ['inspections', 'inspections.engineer'],
             where: { inspections: { engineer: { id: engineerId } } },
         });
+    }
+
+    async republish(
+        projectId: string,
+        clientId: string,
+        deadline: string,
+    ): Promise<Project> {
+        const project = await this.projectRepo.findOne({
+            where: { id: projectId },
+            relations: ['client'],
+        });
+
+        if (!project) throw new NotFoundException(`Project ${projectId} not found`);
+
+        if (project.client.id !== clientId) {
+            throw new ForbiddenException(
+                'You are not allowed to republish this project',
+            );
+        }
+
+        if (project.status !== ProjectStatus.EXPIRED) {
+            throw new ForbiddenException('Only expired projects can be republished');
+        }
+
+        project.status = ProjectStatus.REPUBLISHED;
+        project.deadline = new Date(deadline);
+
+        return this.projectRepo.save(project);
     }
 }

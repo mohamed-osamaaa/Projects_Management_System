@@ -18,6 +18,7 @@ import {
 } from './utils/middlewares/currentUser.middleware';
 import { CompaniesModule } from './companies/companies.module';
 import { ProjectsModule } from './projects/projects.module';
+import { OffersModule } from './offers/offers.module';
 
 @Module({
   imports: [
@@ -36,7 +37,8 @@ import { ProjectsModule } from './projects/projects.module';
     AuthModule,
     UsersModule,
     CompaniesModule,
-    ProjectsModule
+    ProjectsModule,
+    OffersModule
   ],
   controllers: [AppController],
   providers: [

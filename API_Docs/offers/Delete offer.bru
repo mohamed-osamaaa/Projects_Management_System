@@ -1,0 +1,27 @@
+meta {
+  name: Delete offer
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:5030/offers/3999ae61-f91f-4c27-8701-fee5acc8a69d
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImJjOWJiOThiLTU1OTktNDhmOS1iMjQ2LWM0ODQ3ZDU0OGZkMCIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzU2MTk3MzgwLCJleHAiOjE3NTYyODM3ODB9.Lgmnr9TmQEenTHcccJQ_2w6omra3VHL-mTUK-1T7Xbw
+}
+
+body:json {
+  {
+    "price": 6000,
+    "description": "Updated offer details"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

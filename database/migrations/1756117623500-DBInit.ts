@@ -1,4 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import {
+    MigrationInterface,
+    QueryRunner,
+} from 'typeorm';
 
 export class DBInit1756117623500 implements MigrationInterface {
     name = 'DBInit1756117623500'
@@ -14,7 +17,7 @@ export class DBInit1756117623500 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE \`service\` (\`id\` varchar(36) NOT NULL, \`name\` varchar(255) NOT NULL, \`description\` text NOT NULL, \`projectId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`stage\` (\`id\` varchar(36) NOT NULL, \`name\` varchar(255) NOT NULL, \`description\` text NOT NULL, \`projectId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`project\` (\`id\` varchar(36) NOT NULL, \`title\` varchar(255) NOT NULL, \`description\` text NOT NULL, \`status\` varchar(255) NOT NULL DEFAULT 'pending', \`deadline\` timestamp NULL, \`totalBudget\` decimal(10,2) NULL, \`clientId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
-        await queryRunner.query(`CREATE TABLE \`offer\` (\`id\` varchar(36) NOT NULL, \`price\` decimal(10,2) NOT NULL, \`description\` text NOT NULL, \`status\` enum ('pending', 'accepted', 'rejected', 'expired') NOT NULL DEFAULT 'pending', \`projectId\` varchar(36) NULL, \`companyId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`offer\` (\`id\` varchar(36) NOT NULL, \`price\` decimal(10,2) NOT NULL, \`description\` text NOT NULL, \`status\` enum ('pending', 'accepted', 'rejected') NOT NULL DEFAULT 'pending', \`projectId\` varchar(36) NULL, \`companyId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`company\` (\`id\` varchar(36) NOT NULL, \`name\` varchar(255) NOT NULL, \`description\` varchar(255) NULL, \`address\` varchar(255) NULL, \`phone\` varchar(255) NULL, \`paymentAccountId\` varchar(255) NOT NULL, \`ownerId\` varchar(36) NULL, UNIQUE INDEX \`REL_ee87438803acb531639e8284be\` (\`ownerId\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`notification\` (\`id\` varchar(36) NOT NULL, \`message\` varchar(255) NOT NULL, \`isRead\` tinyint NOT NULL DEFAULT 0, \`createdAt\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, \`userId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`support_ticket\` (\`id\` varchar(36) NOT NULL, \`subject\` varchar(255) NOT NULL, \`description\` text NOT NULL, \`status\` varchar(255) NOT NULL DEFAULT 'open', \`priority\` enum ('low', 'medium', 'high') NOT NULL DEFAULT 'medium', \`userId\` varchar(36) NULL, \`assignedToId\` varchar(36) NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);

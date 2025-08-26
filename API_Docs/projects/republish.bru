@@ -1,0 +1,26 @@
+meta {
+  name: republish
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://localhost:5030/projects/fbbb5cf4-5cbe-4070-90c9-d4a5daf2d410/republish
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM0ZmE0MTYzLWUzYTgtNDI0ZC1iYzEzLWYxMmU5OTRhY2JmMSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYxNDU4ODYsImV4cCI6MTc1NjIzMjI4Nn0.0UYve7L80FpnwIGtTY8IEZr7zbcXjyidsy6kfQ4N7ho
+}
+
+body:json {
+  {
+    "deadline": "2025-09-15T23:59:59.000Z"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}
