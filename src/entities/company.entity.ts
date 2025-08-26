@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { Milestone } from './milestone.entity';
 import { Offer } from './offer.entity';
 import { Payment } from './payment.entity';
 import { User } from './user.entity';
@@ -40,6 +41,9 @@ export class Company {
 
   @OneToMany(() => Offer, (offer) => offer.company)
   offers: Offer[];
+
+  @OneToMany(() => Milestone, (milestone) => milestone.company, { nullable: true })
+  milestones: Milestone[];
 
   @OneToMany(() => Payment, (payment) => payment.paymentTo, { nullable: false })
   paymentsReceived: Payment[];

@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Offer } from './offer.entity';
+import { Company } from './company.entity';
 import { Payment } from './payment.entity';
 import { Project } from './project.entity';
 
@@ -43,9 +43,10 @@ export class Milestone {
   @ManyToOne(() => Project, (project) => project.milestones)
   project: Project;
 
+  @ManyToOne(() => Company, (company) => company.milestones, { nullable: true })
+  company: Company;
+
   @OneToMany(() => Payment, (payment) => payment.milestone)
   payments: Payment[];
 
-  @ManyToOne(() => Offer, (offer) => offer.milestones)
-  offer: Offer;
 }

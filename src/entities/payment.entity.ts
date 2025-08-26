@@ -1,4 +1,3 @@
-import { PaymentStatus } from 'src/utils/enums/paymentStatus.enum';
 import {
   Column,
   CreateDateColumn,
@@ -19,13 +18,6 @@ export class Payment {
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   amount: number;
-
-  @Column({
-    type: 'enum',
-    enum: PaymentStatus,
-    default: PaymentStatus.DELAYED,
-  })
-  status: PaymentStatus;
 
   @Column({ nullable: true })
   transactionId: string;

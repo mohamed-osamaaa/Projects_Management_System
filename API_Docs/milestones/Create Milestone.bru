@@ -1,0 +1,28 @@
+meta {
+  name: Create Milestone
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5030/milestones/projects/814ec5e3-74fd-4716-83ed-7287c042a1cf
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY4YzQ2NmUwLTEwM2YtNDE3YS1iNThiLTY0MjcyYzg3ZmExZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjIzMzQ3NywiZXhwIjoxNzU2MzE5ODc3fQ.v-dRAmCbJZS93Ff-w_m2A1So9xsM8KBiyLAsfza0Yvc
+}
+
+body:json {
+  {
+    "title": "Milestone 1",
+    "description": "Description of milestone 1",
+    "amount": 500.00
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

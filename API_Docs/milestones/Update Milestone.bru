@@ -1,0 +1,27 @@
+meta {
+  name: Update Milestone
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:5030/milestones/9a93fdae-4600-49ce-a872-c5f4d27d68f3
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY4YzQ2NmUwLTEwM2YtNDE3YS1iNThiLTY0MjcyYzg3ZmExZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjIzMzQ3NywiZXhwIjoxNzU2MzE5ODc3fQ.v-dRAmCbJZS93Ff-w_m2A1So9xsM8KBiyLAsfza0Yvc
+}
+
+body:json {
+  {
+    "title": "Updated Milestone Title",
+    "description": "Updated description",
+    "amount": 750.00
+  }
+}
+
+settings {
+  encodeUrl: true
+}
