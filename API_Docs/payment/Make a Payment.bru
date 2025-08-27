@@ -1,0 +1,26 @@
+meta {
+  name: Make a Payment
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5030/payments/faae3b45-5ddb-458b-baaf-69eb1cb4a05e
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYyODUxMjksImV4cCI6MTc1NjM3MTUyOX0.T6CVHbI5S398_cI9Jx2_YR5jiGDmLv_J3bQ1DmmGqEw
+}
+
+body:json {
+  {
+    "successUrl": "http://localhost:5500/success.html",
+    "cancelUrl": "http://localhost:5500/cancel.html"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

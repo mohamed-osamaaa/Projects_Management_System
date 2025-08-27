@@ -23,10 +23,10 @@ import { MilestonesService } from './milestones.service';
 export class MilestonesController {
   constructor(private readonly milestonesService: MilestonesService) { }
 
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN, UserRole.COMPANY]))
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.COMPANY]))
   @Post('/projects/:projectId')
   async create(@Param('projectId') projectId: string, @Body() dto: CreateMilestoneDto, @Req() req) {
-    return this.milestonesService.create(projectId, dto);
+    return this.milestonesService.create(projectId, req.currentUser.id, dto);
   }
 
   @UseGuards(AuthenticationGuard)

@@ -20,6 +20,7 @@ import {
   CurrentUserMiddleware,
 } from './utils/middlewares/currentUser.middleware';
 import { MilestonesModule } from './milestones/milestones.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { MilestonesModule } from './milestones/milestones.module';
     CompaniesModule,
     ProjectsModule,
     OffersModule,
-    MilestonesModule
+    MilestonesModule,
+    PaymentModule
   ],
   controllers: [AppController],
   providers: [

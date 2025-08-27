@@ -27,6 +27,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.useGlobalFilters(new AllExceptionsFilter());
+  //web hook stripe in production
+  // Raw body only for Stripe webhook
+  // app.use('/payments/webhook', raw({ type: 'application/json' }));
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

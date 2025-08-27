@@ -1,5 +1,5 @@
+import { Company } from 'src/entities/company.entity';
 import { Milestone } from 'src/entities/milestone.entity';
-import { Offer } from 'src/entities/offer.entity';
 import { Project } from 'src/entities/project.entity';
 
 import { Module } from '@nestjs/common';
@@ -13,7 +13,7 @@ import { MilestonesService } from './milestones.service';
     TypeOrmModule.forFeature([
       Milestone,
       Project,
-      Offer
+      Company
     ]),
   ],
   controllers: [MilestonesController],

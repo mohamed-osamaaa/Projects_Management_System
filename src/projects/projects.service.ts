@@ -61,7 +61,7 @@ export class ProjectsService {
 
             return this.projectRepo.find({
                 where,
-                relations: ['client', 'offers', 'milestones', 'stages'],
+                relations: ['client', 'offers', 'milestones'],
             });
         } catch (error) {
             throw new InternalServerErrorException(error.message);
@@ -71,7 +71,7 @@ export class ProjectsService {
     async findOne(id: string): Promise<Project> {
         const project = await this.projectRepo.findOne({
             where: { id },
-            relations: ['client', 'offers', 'milestones', 'stages'],
+            relations: ['client', 'offers', 'milestones'],
         });
         if (!project) throw new NotFoundException(`Project ${id} not found`);
         return project;

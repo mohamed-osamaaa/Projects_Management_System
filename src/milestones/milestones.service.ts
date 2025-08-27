@@ -1,5 +1,5 @@
+import { Company } from 'src/entities/company.entity';
 import { Milestone } from 'src/entities/milestone.entity';
-import { Offer } from 'src/entities/offer.entity';
 import { Project } from 'src/entities/project.entity';
 import { Repository } from 'typeorm';
 
@@ -19,17 +19,21 @@ export class MilestonesService {
     constructor(
         @InjectRepository(Milestone) private readonly milestoneRepo: Repository<Milestone>,
         @InjectRepository(Project) private readonly projectRepo: Repository<Project>,
-        @InjectRepository(Offer) private readonly offerRepo: Repository<Offer>,
+        @InjectRepository(Company) private readonly companyRepo: Repository<Company>,
     ) { }
 
-    async create(projectId: string, dto: CreateMilestoneDto): Promise<Milestone> {
+    async create(projectId: string, ownerId: string, dto: CreateMilestoneDto): Promise<Milestone> {
         try {
             const project = await this.projectRepo.findOne({ where: { id: projectId } });
             if (!project) throw new NotFoundException(`Project ${projectId} not found`);
 
+            const company = await this.companyRepo.findOne({ where: { owner: { id: ownerId } } });
+            if (!company) throw new NotFoundException(`Company for owner ${ownerId} not found`);
+
             const milestoneData: Partial<Milestone> = {
                 ...dto,
                 project,
+                company,
             };
 
             const milestone = this.milestoneRepo.create(milestoneData);
