@@ -21,6 +21,7 @@ import {
 } from './utils/middlewares/currentUser.middleware';
 import { MilestonesModule } from './milestones/milestones.module';
 import { PaymentModule } from './payment/payment.module';
+import { InspectionAppointmentModule } from './inspection-appointment/inspection-appointment.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { PaymentModule } from './payment/payment.module';
     ProjectsModule,
     OffersModule,
     MilestonesModule,
-    PaymentModule
+    PaymentModule,
+    InspectionAppointmentModule
   ],
   controllers: [AppController],
   providers: [

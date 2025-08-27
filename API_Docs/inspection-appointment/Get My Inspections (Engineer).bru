@@ -1,0 +1,26 @@
+meta {
+  name: Get My Inspections (Engineer)
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:5030/inspections/my
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4YjE0ZmE2LTU2NTYtNGRlNy1iNDY4LWYwMTI2ZTJjYWRhNCIsInJvbGUiOiJlbmdpbmVlciIsImlhdCI6MTc1NjMzMDA5OCwiZXhwIjoxNzU2NDE2NDk4fQ.XGQOyhpr9R0nhS1EZ0W8fMY1NvZMZ74ylnb_KAvIH0g
+}
+
+body:json {
+  {
+    "status": "accepted"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

@@ -37,7 +37,7 @@ export class CompaniesService {
         try {
             const company = await this.companyRepo.findOne({
                 where: { id },
-                relations: ['engineers', 'offers'],
+                relations: ['engineers', 'offers', 'owner'],
             });
 
             if (!company) {

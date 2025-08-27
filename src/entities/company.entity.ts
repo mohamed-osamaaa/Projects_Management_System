@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   Entity,
@@ -29,6 +30,7 @@ export class Company {
   @Column({ nullable: true })
   phone: string;
 
+  @Exclude()
   @Column()
   paymentAccountId: string;
 

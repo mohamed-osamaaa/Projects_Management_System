@@ -1,11 +1,11 @@
 meta {
-  name: Add engineer to company
+  name: Update Inspection Status (Accept/Reject)
   type: http
-  seq: 7
+  seq: 5
 }
 
-post {
-  url: http://localhost:5030/companies/0e8e9ec1-1029-49b1-9d5d-77031a02cf3e/engineers
+patch {
+  url: http://localhost:5030/inspections/status/fcd66d19-0332-4874-96a9-a46aaf202a7e
   body: json
   auth: inherit
 }
@@ -16,10 +16,9 @@ headers {
 
 body:json {
   {
-    "name": "Engineer Name",
-    "email": "engineer@company.com",
-    "password": "engineer123"
+    "status": "accepted"
   }
+  
 }
 
 settings {

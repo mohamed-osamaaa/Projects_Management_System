@@ -1,17 +1,25 @@
 meta {
-  name: Get all companies
+  name: Create Inspection
   type: http
   seq: 1
 }
 
-get {
-  url: http://localhost:5030/companies
-  body: none
+post {
+  url: http://localhost:5030/inspections/549fc0b4-e2e7-491d-aa01-89c02ef1ac12
+  body: json
   auth: inherit
 }
 
 headers {
   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYyODUxMjksImV4cCI6MTc1NjM3MTUyOX0.T6CVHbI5S398_cI9Jx2_YR5jiGDmLv_J3bQ1DmmGqEw
+}
+
+body:json {
+  {
+    "date": "2025-09-01T10:00:00.000Z",
+    "companyId" : "0e8e9ec1-1029-49b1-9d5d-77031a02cf3e"
+  }
+  
 }
 
 settings {

@@ -1,11 +1,11 @@
 meta {
-  name: Add engineer to company
+  name: Assign Engineer to Inspection
   type: http
-  seq: 7
+  seq: 4
 }
 
-post {
-  url: http://localhost:5030/companies/0e8e9ec1-1029-49b1-9d5d-77031a02cf3e/engineers
+patch {
+  url: http://localhost:5030/inspections/assign-engineer/301efb18-9fc1-4c6c-a78b-d427faeb4367
   body: json
   auth: inherit
 }
@@ -16,9 +16,7 @@ headers {
 
 body:json {
   {
-    "name": "Engineer Name",
-    "email": "engineer@company.com",
-    "password": "engineer123"
+    "engineerId": "98b14fa6-5656-4de7-b468-f0126e2cada4"
   }
 }
 

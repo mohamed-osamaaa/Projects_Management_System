@@ -26,7 +26,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 export class CompaniesController {
   constructor(private readonly companiesService: CompaniesService) { }
 
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
+  @UseGuards(AuthenticationGuard)
   @Get()
   async getCompanies(): Promise<Company[]> {
     return this.companiesService.findAll();
@@ -81,7 +81,7 @@ export class CompaniesController {
     const user = req.currentUser;
     const company = await this.companiesService.findOne(id);
 
-    if (user.role !== UserRole.ADMIN && user.id !== company.owner.id) {
+    if (user.role === UserRole.COMPANY && user.id !== company.owner.id) {
       throw new ForbiddenException("You are not allowed to add engineers to this company");
     }
 
@@ -100,7 +100,7 @@ export class CompaniesController {
     const user = req.currentUser;
     const company = await this.companiesService.findOne(companyId);
 
-    if (user.role !== UserRole.ADMIN && user.id !== company.owner.id) {
+    if (user.role === UserRole.COMPANY && user.id !== company.owner.id) {
       throw new ForbiddenException("You are not allowed to remove engineers from this company");
     }
 

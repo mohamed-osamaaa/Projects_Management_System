@@ -1,17 +1,24 @@
 meta {
-  name: Get all companies
+  name: Update Inspection (Reschedule)
   type: http
-  seq: 1
+  seq: 3
 }
 
-get {
-  url: http://localhost:5030/companies
-  body: none
+patch {
+  url: http://localhost:5030/inspections/fcd66d19-0332-4874-96a9-a46aaf202a7e
+  body: json
   auth: inherit
 }
 
 headers {
   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYyODUxMjksImV4cCI6MTc1NjM3MTUyOX0.T6CVHbI5S398_cI9Jx2_YR5jiGDmLv_J3bQ1DmmGqEw
+}
+
+body:json {
+  {
+    "date": "2025-09-05T15:00:00.000Z"
+  }
+  
 }
 
 settings {
