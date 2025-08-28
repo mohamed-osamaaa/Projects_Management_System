@@ -19,9 +19,6 @@ export class Message {
   @Column({ nullable: true })
   attachmentUrl: string;
 
-  @Column({ default: false })
-  isRead: boolean;
-
   @ManyToOne(() => Chat, (chat) => chat.messages)
   chat: Chat;
 

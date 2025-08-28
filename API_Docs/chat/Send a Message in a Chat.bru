@@ -1,0 +1,24 @@
+meta {
+  name: Send a Message in a Chat
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5030/chats/5671ae34-9775-4af5-8cd0-fdb3f25a36b0/messages
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYzNzI4ODMsImV4cCI6MTc1NjQ1OTI4M30.CAJovwCv6NoYVLwF1rsgvFBX71qdz1ZTxK6_nbXit7c
+}
+
+body:multipart-form {
+  content: this is message @contentType(Test)
+  file: @file(C:\Users\AIA\OneDrive\Pictures\majestic-mountain-peak-tranquil-winter-landscape-generated-by-ai.jpg) @contentType(File)
+}
+
+settings {
+  encodeUrl: true
+}

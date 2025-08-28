@@ -1,7 +1,8 @@
 import {
   Entity,
-  ManyToOne,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -13,7 +14,8 @@ export class Chat {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => Project, (project) => project.chats)
+  @OneToOne(() => Project, (project) => project.chat, { onDelete: 'CASCADE' })
+  @JoinColumn()
   project: Project;
 
   @OneToMany(() => Message, (message) => message.chat)

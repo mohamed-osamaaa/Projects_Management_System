@@ -44,7 +44,7 @@ export class ProjectsController {
   }
 
 
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN, UserRole.COMPANY, UserRole.ENGINEER]))
+  @UseGuards(AuthenticationGuard)
   @Get()
   async getProjects(
     @Query('status') status?: string,

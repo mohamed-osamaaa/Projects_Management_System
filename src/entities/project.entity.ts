@@ -4,6 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -50,8 +51,8 @@ export class Project {
   @OneToMany(() => InspectionAppointment, (inspection) => inspection.project)
   inspections: InspectionAppointment[];
 
-  @OneToMany(() => Chat, (chat) => chat.project)
-  chats: Chat[];
+  @OneToOne(() => Chat, (chat) => chat.project)
+  chat: Chat;
 
   @OneToMany(() => ProjectDocument, (doc) => doc.project)
   documents: ProjectDocument[];

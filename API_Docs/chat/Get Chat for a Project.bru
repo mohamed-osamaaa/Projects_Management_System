@@ -1,0 +1,19 @@
+meta {
+  name: Get Chat for a Project
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:5030/chats/projects/549fc0b4-e2e7-491d-aa01-89c02ef1ac12
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTYzNzI4ODMsImV4cCI6MTc1NjQ1OTI4M30.CAJovwCv6NoYVLwF1rsgvFBX71qdz1ZTxK6_nbXit7c
+}
+
+settings {
+  encodeUrl: true
+}

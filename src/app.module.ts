@@ -12,16 +12,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { ChatModule } from './chat/chat.module';
 import { CompaniesModule } from './companies/companies.module';
+import {
+  InspectionAppointmentModule,
+} from './inspection-appointment/inspection-appointment.module';
+import { MilestonesModule } from './milestones/milestones.module';
 import { OffersModule } from './offers/offers.module';
+import { PaymentModule } from './payment/payment.module';
 import { ProjectsModule } from './projects/projects.module';
 import { UsersModule } from './users/users.module';
 import {
   CurrentUserMiddleware,
 } from './utils/middlewares/currentUser.middleware';
-import { MilestonesModule } from './milestones/milestones.module';
-import { PaymentModule } from './payment/payment.module';
-import { InspectionAppointmentModule } from './inspection-appointment/inspection-appointment.module';
 
 @Module({
   imports: [
@@ -44,7 +47,8 @@ import { InspectionAppointmentModule } from './inspection-appointment/inspection
     OffersModule,
     MilestonesModule,
     PaymentModule,
-    InspectionAppointmentModule
+    InspectionAppointmentModule,
+    ChatModule
   ],
   controllers: [AppController],
   providers: [
