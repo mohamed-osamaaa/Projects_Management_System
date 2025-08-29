@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Company } from 'src/entities/company.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { UserRole } from 'src/utils/enums/userRoles.enum';
 import { Repository } from 'typeorm';
 
@@ -23,6 +24,8 @@ export class CompaniesService {
 
         @InjectRepository(User)
         private readonly userRepo: Repository<User>,
+
+        private readonly notificationsService: NotificationsService
     ) { }
 
     async findAll(): Promise<Company[]> {
@@ -76,6 +79,11 @@ export class CompaniesService {
 
             savedUser.company = company;
             await this.userRepo.save(savedUser);
+
+            await this.notificationsService.createNotification(
+                savedUser.id,
+                'تم تسجيل شركتك بنجاح 🚀.'
+            );
 
             return company;
         } catch (error) {
@@ -135,7 +143,14 @@ export class CompaniesService {
                 company,
             });
 
-            return await this.userRepo.save(engineer);
+            const savedEngineer = await this.userRepo.save(engineer);
+
+            await this.notificationsService.createNotification(
+                savedEngineer.id,
+                `تمت إضافتك كموظف جديد في ${company.name}.`
+            );
+
+            return savedEngineer;
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
@@ -160,6 +175,11 @@ export class CompaniesService {
             }
 
             await this.userRepo.remove(engineer);
+
+            await this.notificationsService.createNotification(
+                engineer.id,
+                `لقد تمت إزالتك من الشركة ${company.name}`
+            );
 
             return { message: `Engineer ${engineerId} removed successfully from company ${companyId}` };
         } catch (error) {

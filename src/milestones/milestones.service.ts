@@ -1,6 +1,7 @@
 import { Company } from 'src/entities/company.entity';
 import { Milestone } from 'src/entities/milestone.entity';
 import { Project } from 'src/entities/project.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { Repository } from 'typeorm';
 
 import {
@@ -20,6 +21,7 @@ export class MilestonesService {
         @InjectRepository(Milestone) private readonly milestoneRepo: Repository<Milestone>,
         @InjectRepository(Project) private readonly projectRepo: Repository<Project>,
         @InjectRepository(Company) private readonly companyRepo: Repository<Company>,
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     async create(projectId: string, ownerId: string, dto: CreateMilestoneDto): Promise<Milestone> {
@@ -37,7 +39,14 @@ export class MilestonesService {
             };
 
             const milestone = this.milestoneRepo.create(milestoneData);
-            return await this.milestoneRepo.save(milestone);
+            const savedMilestone = await this.milestoneRepo.save(milestone);
+
+            await this.notificationsService.createNotification(
+                project.client.id,
+                'تمت إضافة معلم جديد لمشروعك.'
+            );
+
+            return savedMilestone;
         } catch (error) {
             throw new InternalServerErrorException(error.message || 'Failed to create milestone');
         }
@@ -76,7 +85,14 @@ export class MilestonesService {
         try {
             const milestone = await this.findOne(id);
             milestone.milestoneStatus = dto.milestoneStatus;
-            return await this.milestoneRepo.save(milestone);
+            const updatedMilestone = await this.milestoneRepo.save(milestone);
+
+            await this.notificationsService.createNotification(
+                milestone.project.client.id,
+                `تم تغيير حالة المعلم إلى ${dto.milestoneStatus}.`
+            );
+
+            return updatedMilestone;
         } catch (error) {
             throw new InternalServerErrorException(error.message || 'Failed to update milestone status');
         }

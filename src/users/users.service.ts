@@ -1,13 +1,14 @@
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import {
-  FindManyOptions,
-  Repository,
+    FindManyOptions,
+    Repository,
 } from 'typeorm';
 
 import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -17,108 +18,119 @@ import { ToggleVerificationBadgeDto } from './dto/toggleVerificationBadge.dto';
 export class UsersService {
     constructor(
         @InjectRepository(User)
-        private readonly userRepository: Repository<User>
-    ){}
+        private readonly userRepository: Repository<User>,
+
+        private readonly notificationsService: NotificationsService
+    ) { }
 
     async searchByName(name: string): Promise<User[]> {
         try {
-        if (!name || name.trim() === '') {
-            return [];
-        }
+            if (!name || name.trim() === '') {
+                return [];
+            }
 
-        const users = await this.userRepository
-            .createQueryBuilder('user')
-            .where('LOWER(user.name) LIKE :name', {
-                name: `%${name.toLowerCase()}%`,
-            })
-            .getMany();
+            const users = await this.userRepository
+                .createQueryBuilder('user')
+                .where('LOWER(user.name) LIKE :name', {
+                    name: `%${name.toLowerCase()}%`,
+                })
+                .getMany();
 
-        return users;
+            return users;
         } catch (error) {
-        console.error('Error in searchByName:', error.message);
-        throw new InternalServerErrorException('Failed to search users by name');
+            console.error('Error in searchByName:', error.message);
+            throw new InternalServerErrorException('Failed to search users by name');
         }
     }
 
     async findAll(page?: number, limit?: number): Promise<{ data: User[]; total: number }> {
         try {
-        const options: FindManyOptions<User> = {
-            // relations: [
-            // 'company',
-            // 'projects',
-            // 'messages',
-            // 'tickets',
-            // 'documents',
-            // 'notifications',
-            // 'inspections',
-            // ],
-            order: { name: 'ASC' },
-        };
+            const options: FindManyOptions<User> = {
+                // relations: [
+                // 'company',
+                // 'projects',
+                // 'messages',
+                // 'tickets',
+                // 'documents',
+                // 'notifications',
+                // 'inspections',
+                // ],
+                order: { name: 'ASC' },
+            };
 
-        if (page && limit) {
-            options.skip = (page - 1) * limit;
-            options.take = limit;
-        }
+            if (page && limit) {
+                options.skip = (page - 1) * limit;
+                options.take = limit;
+            }
 
-        const [data, total] = await this.userRepository.findAndCount(options);
+            const [data, total] = await this.userRepository.findAndCount(options);
 
-        return { data, total };
+            return { data, total };
         } catch (error) {
-        throw new InternalServerErrorException('Failed to fetch users');
+            throw new InternalServerErrorException('Failed to fetch users');
         }
     }
 
     async findOneById(id: string): Promise<User | null> {
         try {
-        const user = await this.userRepository.findOne({
-            where: { id },
-            relations: [
-            'company',
-            'projects',
-            'messages',
-            'tickets',
-            'documents',
-            'notifications',
-            'inspections',
-            ],
-        });
+            const user = await this.userRepository.findOne({
+                where: { id },
+                relations: [
+                    'company',
+                    'projects',
+                    'messages',
+                    'tickets',
+                    'documents',
+                    'notifications',
+                    'inspections',
+                ],
+            });
 
-        if (!user) {
-            throw new NotFoundException(`User with id ${id} not found`);
-        }
+            if (!user) {
+                throw new NotFoundException(`User with id ${id} not found`);
+            }
 
-        return user;
+            return user;
         } catch (error) {
-        throw new InternalServerErrorException('Failed to fetch user');
+            throw new InternalServerErrorException('Failed to fetch user');
         }
     }
 
     async deleteById(id: string): Promise<string> {
         try {
-        const result = await this.userRepository.delete(id);
+            const result = await this.userRepository.delete(id);
 
-        if (result.affected === 0) {
-            throw new NotFoundException(`User with id ${id} not found`);
-        }
+            if (result.affected === 0) {
+                throw new NotFoundException(`User with id ${id} not found`);
+            }
 
-        return `User with id ${id} has been deleted`;
+            return `User with id ${id} has been deleted`;
         } catch (error) {
-        throw new InternalServerErrorException('Failed to delete user');
+            throw new InternalServerErrorException('Failed to delete user');
         }
     }
 
     async toggleVerificationBadge(userId: string, dto: ToggleVerificationBadgeDto): Promise<User> {
         try {
-        const user = await this.userRepository.findOne({ where: { id: userId } });
+            const user = await this.userRepository.findOne({ where: { id: userId } });
 
-        if (!user) {
-            throw new NotFoundException(`User with id ${userId} not found`);
-        }
+            if (!user) {
+                throw new NotFoundException(`User with id ${userId} not found`);
+            }
 
-        user.verificationBadge = dto.verificationBadge;
-        return this.userRepository.save(user);
+            user.verificationBadge = dto.verificationBadge;
+            const updatedUser = await this.userRepository.save(user);
+
+            if (dto.verificationBadge) {
+                await this.notificationsService.createNotification(
+                    updatedUser.id,
+                    'تم توثيق حسابك ✅',
+                );
+            }
+
+            return updatedUser;
         } catch (error) {
-        throw new InternalServerErrorException('Failed to update verification badge');
+            throw new InternalServerErrorException('Failed to update verification badge');
         }
     }
 }

@@ -1,4 +1,5 @@
 import { User } from 'src/entities/user.entity';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
@@ -14,9 +15,10 @@ import { AuthService } from './auth.service';
       secret: process.env.ACCESS_TOKEN_SECRET_KEY,
       signOptions: { expiresIn: '24h' },
     }),
+    NotificationsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
-  exports: [AuthService , JwtModule],
+  exports: [AuthService, JwtModule],
 })
-export class AuthModule {}
+export class AuthModule { }

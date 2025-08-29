@@ -1,5 +1,6 @@
 import { Company } from 'src/entities/company.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { CompaniesService } from './companies.service';
       User,
       Company
     ]),
+    NotificationsModule
   ],
   controllers: [CompaniesController],
   providers: [CompaniesService],

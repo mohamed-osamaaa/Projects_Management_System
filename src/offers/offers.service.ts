@@ -1,6 +1,7 @@
 import { Company } from 'src/entities/company.entity';
 import { Offer } from 'src/entities/offer.entity';
 import { Project } from 'src/entities/project.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { OfferStatus } from 'src/utils/enums/offerStatus.enum';
 import {
     checkProjectExpired,
@@ -25,6 +26,7 @@ export class OffersService {
         @InjectRepository(Offer) private readonly offerRepo: Repository<Offer>,
         @InjectRepository(Project) private readonly projectRepo: Repository<Project>,
         @InjectRepository(Company) private readonly companyRepo: Repository<Company>,
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     async create(projectId: string, dto: CreateOfferDto, userId: string): Promise<Offer> {
@@ -40,7 +42,14 @@ export class OffersService {
             if (!company) throw new NotFoundException(`Company not found for user ${userId}`);
 
             const offer = this.offerRepo.create({ ...dto, project, company });
-            return await this.offerRepo.save(offer);
+            const savedOffer = await this.offerRepo.save(offer);
+
+            await this.notificationsService.createNotification(
+                project.client.id,
+                `لديك عرض جديد على مشروعك ${project.title}.`
+            );
+
+            return savedOffer;
         } catch (error) {
             throw new InternalServerErrorException(error.message || 'Failed to create offer');
         }
@@ -90,7 +99,21 @@ export class OffersService {
             }
 
             offer.status = dto.status;
-            return await this.offerRepo.save(offer);
+            const updatedOffer = await this.offerRepo.save(offer);
+
+            if (dto.status === OfferStatus.ACCEPTED) {
+                await this.notificationsService.createNotification(
+                    offer.company.owner.id,
+                    'تم قبول عرضك 🎉'
+                );
+            } else if (dto.status === OfferStatus.REJECTED) {
+                await this.notificationsService.createNotification(
+                    offer.company.owner.id,
+                    'تم رفض عرضك ❌'
+                );
+            }
+
+            return updatedOffer;
         } catch (error) {
             throw new InternalServerErrorException(error.message || 'Failed to update offer status');
         }

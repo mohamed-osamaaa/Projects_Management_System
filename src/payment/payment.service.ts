@@ -1,6 +1,7 @@
 import { Milestone } from 'src/entities/milestone.entity';
 import { Payment } from 'src/entities/payment.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { PaymentStatus } from 'src/utils/enums/paymentStatus.enum';
 import { UserRole } from 'src/utils/enums/userRoles.enum';
 import Stripe from 'stripe';
@@ -22,6 +23,7 @@ export class PaymentsService {
         @InjectRepository(Payment) private paymentRepo: Repository<Payment>,
         @InjectRepository(Milestone) private milestoneRepo: Repository<Milestone>,
         @InjectRepository(User) private userRepo: Repository<User>,
+        private readonly notificationsService: NotificationsService,
     ) {
         this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
     }
@@ -95,6 +97,11 @@ export class PaymentsService {
 
             milestone.paymentStatus = PaymentStatus.PAID;
             await this.milestoneRepo.save(milestone);
+
+            await this.notificationsService.createNotification(
+                milestone.project.client.id,
+                `تم إنشاء دفعة جديدة مرتبطة بمعلم ${milestone.title}.`
+            );
 
             return { checkoutUrl: session.url as string };
         } catch (error) {

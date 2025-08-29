@@ -1,6 +1,7 @@
 import { Company } from 'src/entities/company.entity';
 import { Offer } from 'src/entities/offer.entity';
 import { Project } from 'src/entities/project.entity';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +16,7 @@ import { OffersService } from './offers.service';
       Project,
       Company
     ]),
+    NotificationsModule,
   ],
   controllers: [OffersController],
   providers: [OffersService],

@@ -52,6 +52,12 @@ export class User {
   })
   verificationBadge: boolean;
 
+  @Column({
+    type: 'boolean',
+    default: true
+  })
+  notificationsEnabled: boolean;
+
   @OneToOne(() => Company, (company) => company.owner)
   ownedCompany: Company;
 

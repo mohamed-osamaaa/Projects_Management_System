@@ -3,6 +3,7 @@ import { Chat } from 'src/entities/chat.entity';
 import { Message } from 'src/entities/message.entity';
 import { Project } from 'src/entities/project.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { CloudinaryService } from 'src/utils/cloudinary/cloudinary.service';
 import { Repository } from 'typeorm';
 
@@ -21,6 +22,7 @@ import { CreateMessageDto } from './dto/create-message.dto';
 export class ChatService {
     constructor(
         private readonly cloudinaryService: CloudinaryService,
+        private readonly notificationsService: NotificationsService,
         @InjectRepository(Chat) private readonly chatRepo: Repository<Chat>,
         @InjectRepository(Message) private readonly messageRepo: Repository<Message>,
         @InjectRepository(Project) private readonly projectRepo: Repository<Project>,
@@ -58,7 +60,10 @@ export class ChatService {
         file?: Express.Multer.File,
     ): Promise<Message> {
         try {
-            const chat = await this.chatRepo.findOne({ where: { id: chatId } });
+            const chat = await this.chatRepo.findOne({
+                where: { id: chatId },
+                relations: ['project', 'project.client'],
+            });
             if (!chat) throw new NotFoundException('Chat not found');
 
             const sender = await this.userRepo.findOne({ where: { id: senderId } });
@@ -78,7 +83,16 @@ export class ChatService {
                 attachmentUrl,
             });
 
-            return await this.messageRepo.save(message);
+            const savedMessage = await this.messageRepo.save(message);
+
+            if (chat.project.client.id !== sender.id) {
+                await this.notificationsService.createNotification(
+                    chat.project.client.id,
+                    `لديك رسالة جديدة من ${sender.name} في مشروعك ${chat.project.title}.`
+                );
+            }
+
+            return savedMessage;
         } catch (err) {
             throw new InternalServerErrorException(err.message);
         }

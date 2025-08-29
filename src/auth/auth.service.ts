@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { Repository } from 'typeorm';
 
 import {
@@ -23,6 +24,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly notificationsService: NotificationsService
   ) { }
 
   async register(dto: RegisterUserDto): Promise<User> {
@@ -39,7 +41,14 @@ export class AuthService {
         password: hashedPassword,
       });
 
-      return await this.usersRepository.save(user);
+      const savedUser = await this.usersRepository.save(user);
+
+      await this.notificationsService.createNotification(
+        savedUser.id,
+        'مرحبا بك 👋 تم إنشاء حسابك بنجاح.',
+      );
+
+      return savedUser;
     } catch (error) {
       throw new InternalServerErrorException('Failed to register user');
     }

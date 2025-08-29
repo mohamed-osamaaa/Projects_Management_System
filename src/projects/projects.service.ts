@@ -1,4 +1,5 @@
 import { Project } from 'src/entities/project.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { ProjectStatus } from 'src/utils/enums/projectStatus.enum';
 import {
     checkProjectExpired,
@@ -26,6 +27,8 @@ export class ProjectsService {
     constructor(
         @InjectRepository(Project)
         private readonly projectRepo: Repository<Project>,
+
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     async create(dto: CreateProjectDto, clientId: string): Promise<Project> {
@@ -34,7 +37,14 @@ export class ProjectsService {
                 ...dto,
                 client: { id: clientId },
             });
-            return await this.projectRepo.save(project);
+            const savedProject = await this.projectRepo.save(project);
+
+            await this.notificationsService.createNotification(
+                clientId,
+                'تم إنشاء مشروعك الجديد.'
+            );
+
+            return savedProject;
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
@@ -94,7 +104,14 @@ export class ProjectsService {
             }
 
             project.status = dto.status;
-            return this.projectRepo.save(project);
+            const updatedProject = await this.projectRepo.save(project);
+
+            await this.notificationsService.createNotification(
+                project.client.id,
+                `تم تحديث حالة المشروع إلى ${dto.status}.`
+            );
+
+            return updatedProject;
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
@@ -145,6 +162,13 @@ export class ProjectsService {
         project.status = ProjectStatus.REPUBLISHED;
         project.deadline = new Date(deadline);
 
-        return this.projectRepo.save(project);
+        const updatedProject = await this.projectRepo.save(project);
+
+        await this.notificationsService.createNotification(
+            clientId,
+            'تمت إعادة نشر مشروعك بنجاح.'
+        );
+
+        return updatedProject;
     }
 }

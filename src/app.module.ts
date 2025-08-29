@@ -25,6 +25,7 @@ import { UsersModule } from './users/users.module';
 import {
   CurrentUserMiddleware,
 } from './utils/middlewares/currentUser.middleware';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -48,7 +49,8 @@ import {
     MilestonesModule,
     PaymentModule,
     InspectionAppointmentModule,
-    ChatModule
+    ChatModule,
+    NotificationsModule
   ],
   controllers: [AppController],
   providers: [

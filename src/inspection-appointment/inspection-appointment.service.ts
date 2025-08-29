@@ -4,6 +4,7 @@ import {
 } from 'src/entities/inspectionAppointment.entity';
 import { Project } from 'src/entities/project.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { Repository } from 'typeorm';
 
 import {
@@ -32,6 +33,8 @@ export class InspectionsService {
 
         @InjectRepository(Company)
         private readonly companyRepo: Repository<Company>,
+
+        private readonly notificationsService: NotificationsService,
     ) { }
 
     async create(projectId: string, dto: CreateInspectionDto): Promise<InspectionAppointment> {
@@ -39,7 +42,10 @@ export class InspectionsService {
             const project = await this.projectRepo.findOne({ where: { id: projectId } });
             if (!project) throw new NotFoundException('Project not found');
 
-            const company = await this.companyRepo.findOne({ where: { id: dto.companyId } });
+            const company = await this.companyRepo.findOne({
+                where: { id: dto.companyId },
+                relations: ['owner'],
+            });
             if (!company) throw new NotFoundException('Company not found');
 
             const inspection = this.inspectionRepo.create({
@@ -48,7 +54,14 @@ export class InspectionsService {
                 company,
             });
 
-            return await this.inspectionRepo.save(inspection);
+            const savedInspection = await this.inspectionRepo.save(inspection);
+
+            await this.notificationsService.createNotification(
+                company.owner.id,
+                `تم حجز موعد فحص جديد من قبل العميل ${project.client.name}.`
+            );
+
+            return savedInspection;
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
@@ -90,7 +103,14 @@ export class InspectionsService {
             if (!engineer) throw new NotFoundException('Engineer not found');
 
             inspection.engineer = engineer;
-            return await this.inspectionRepo.save(inspection);
+            const updatedInspection = await this.inspectionRepo.save(inspection);
+
+            await this.notificationsService.createNotification(
+                engineer.id,
+                'تم تعيينك لموعد فحص جديد.'
+            );
+
+            return updatedInspection;
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
@@ -104,7 +124,14 @@ export class InspectionsService {
             if (!inspection) throw new NotFoundException('Inspection not found');
 
             inspection.status = dto.status;
-            return await this.inspectionRepo.save(inspection);
+            const updatedInspection = await this.inspectionRepo.save(inspection);
+
+            await this.notificationsService.createNotification(
+                inspection.project.client.id,
+                `تم ${dto.status === 'accepted' ? 'قبول' : 'رفض'} طلب الفحص.`
+            );
+
+            return updatedInspection;
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }

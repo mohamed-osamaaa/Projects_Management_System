@@ -4,6 +4,7 @@ import {
 } from 'src/entities/inspectionAppointment.entity';
 import { Project } from 'src/entities/project.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,7 +19,9 @@ import { InspectionsService } from './inspection-appointment.service';
       Project,
       User,
       Company,
-    ]), TypeOrmModule.forFeature([InspectionAppointment, Project, User])],
+    ]),
+    NotificationsModule,
+  ],
   controllers: [InspectionsController],
   providers: [InspectionsService],
 })

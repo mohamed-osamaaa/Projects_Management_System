@@ -1,6 +1,7 @@
 import { Milestone } from 'src/entities/milestone.entity';
 import { Payment } from 'src/entities/payment.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,6 +16,7 @@ import { PaymentsService } from './payment.service';
       Milestone,
       User
     ]),
+    NotificationsModule,
   ],
   controllers: [PaymentsController],
   providers: [PaymentsService],
