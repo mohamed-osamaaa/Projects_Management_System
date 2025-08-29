@@ -31,6 +31,9 @@ export class InspectionAppointment {
   @ManyToOne(() => Company, { nullable: true })
   company: Company;
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, (user) => user.inspections, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
   engineer: User;
 }

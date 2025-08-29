@@ -1,7 +1,6 @@
 import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
 
 import {
-  Body,
   Controller,
   Get,
   Param,
@@ -10,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { NotificationsService } from './notifications.service';
 
 @Controller('notifications')
@@ -25,20 +23,16 @@ export class NotificationsController {
   }
 
   @UseGuards(AuthenticationGuard)
-  @Get('unread/:userId')
-  async getUnread(@Param('userId') userId: string) {
-    return await this.notificationsService.getUnreadNotifications(userId);
+  @Get('unread')
+  async getUnread(@Req() req) {
+    return await this.notificationsService.getUnreadNotifications(req.currentUser.id);
   }
 
   @UseGuards(AuthenticationGuard)
   @Patch(':id/read')
   async markAsRead(
-    @Param('id') id: string,
-    @Body() updateDto: UpdateNotificationDto
+    @Param('id') id: string
   ) {
-    if (!updateDto.isRead) {
-      return { message: "Send isRead: true to mark as read" };
-    }
     return await this.notificationsService.markAsRead(id);
   }
 

@@ -1,4 +1,5 @@
 import { Notification } from 'src/entities/notification.entity';
+import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 
 import {
@@ -13,11 +14,21 @@ export class NotificationsService {
     constructor(
         @InjectRepository(Notification)
         private readonly notificationRepo: Repository<Notification>,
+
+        @InjectRepository(User)
+        private readonly userRepo: Repository<User>,
     ) { }
 
 
-    async createNotification(userId: string, message: string): Promise<Notification> {
+    async createNotification(userId: string, message: string): Promise<Notification | null> {
         try {
+            const user = await this.userRepo.findOne({ where: { id: userId } });
+
+            if (!user) throw new NotFoundException(`User ${userId} not found`);
+
+            if (!user.notificationsEnabled) {
+                return null;
+            }
             const notification = this.notificationRepo.create({
                 user: { id: userId },
                 message,
@@ -61,6 +72,7 @@ export class NotificationsService {
                 .where("userId = :userId", { userId })
                 .andWhere("isRead = :isRead", { isRead: false })
                 .execute();
+
         } catch (err) {
             throw new InternalServerErrorException('Error marking all notifications as read');
         }
