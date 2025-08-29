@@ -26,6 +26,7 @@ import {
   CurrentUserMiddleware,
 } from './utils/middlewares/currentUser.middleware';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ProjectDocumentsModule } from './project-documents/project-documents.module';
 
 @Module({
   imports: [
@@ -50,7 +51,8 @@ import { NotificationsModule } from './notifications/notifications.module';
     PaymentModule,
     InspectionAppointmentModule,
     ChatModule,
-    NotificationsModule
+    NotificationsModule,
+    ProjectDocumentsModule
   ],
   controllers: [AppController],
   providers: [

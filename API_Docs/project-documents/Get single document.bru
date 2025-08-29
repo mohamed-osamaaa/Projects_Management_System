@@ -1,0 +1,25 @@
+meta {
+  name: Get single document
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:5030/project-documents/d2c28f85-40bd-4d6d-bc0f-c9ded61f46da
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTY0NzU4MzgsImV4cCI6MTc1NjU2MjIzOH0.YQ9AZvXnppPIC0bg2Q2E5amKvKvoxphTFQ4oksCm4-E
+}
+
+body:multipart-form {
+  name: My Report @contentType(Text)
+  description: This is the project report @contentType(Text)
+  file: @file(C:\Users\AIA\OneDrive\Pictures\majestic-mountain-peak-tranquil-winter-landscape-generated-by-ai.jpg) @contentType(File)
+}
+
+settings {
+  encodeUrl: true
+}
