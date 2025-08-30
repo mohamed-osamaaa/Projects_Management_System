@@ -29,6 +29,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { ProjectDocumentsModule } from './project-documents/project-documents.module';
 import { SupportTicketModule } from './support-ticket/support-ticket.module';
 import { StaticContentModule } from './static-content/static-content.module';
+import { DashboardsModule } from './dashboards/dashboards.module';
 
 @Module({
   imports: [
@@ -56,7 +57,8 @@ import { StaticContentModule } from './static-content/static-content.module';
     NotificationsModule,
     ProjectDocumentsModule,
     SupportTicketModule,
-    StaticContentModule
+    StaticContentModule,
+    DashboardsModule
   ],
   controllers: [AppController],
   providers: [

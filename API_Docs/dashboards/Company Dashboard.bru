@@ -1,25 +1,17 @@
 meta {
-  name: Add engineer to company
+  name: Company Dashboard
   type: http
-  seq: 7
+  seq: 2
 }
 
-post {
-  url: http://localhost:5030/companies/1ec5fef7-f16c-4d06-9b01-61079a2aafaa/engineers
-  body: json
+get {
+  url: http://localhost:5030/dashboards/company
+  body: none
   auth: inherit
 }
 
 headers {
   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk3NDBlYTAxLWQzNjYtNDk5Yy05ZWZmLTUzZGEzMTc2YzI3ZiIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzU2NTY0NDkwLCJleHAiOjE3NTY2NTA4OTB9.J9l6d_CAUVYJCoK3w-ygFo7Sqw9cAg25pNwICG0lpkg
-}
-
-body:json {
-  {
-    "name": "Engineer Name",
-    "email": "engineer@company.com",
-    "password": "Mm@123456789"
-  }
 }
 
 settings {

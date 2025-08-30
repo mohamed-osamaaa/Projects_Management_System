@@ -1,0 +1,19 @@
+meta {
+  name: Client Dashboard
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:5030/dashboards/client
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQ4YjEzOTc2LThkNTktNGRiZi1hYWNjLWNmZTkyZjE1NjYxYiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NTY1NjMzOTUsImV4cCI6MTc1NjY0OTc5NX0.upA6c2MiJIMeyABgHplCwB8eWjl0hFHZHzZiXFQYffY
+}
+
+settings {
+  encodeUrl: true
+}
