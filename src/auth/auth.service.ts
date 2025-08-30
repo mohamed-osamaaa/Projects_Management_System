@@ -111,4 +111,6 @@ export class AuthService {
       throw new InternalServerErrorException('Failed to fetch user by id');
     }
   }
+
+
 }

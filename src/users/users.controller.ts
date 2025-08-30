@@ -20,7 +20,7 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
 
   @UseGuards(AuthenticationGuard)
@@ -29,7 +29,7 @@ export class UsersController {
     return this.usersService.searchByName(name);
   }
 
-  @UseGuards(AuthenticationGuard,AuthorizeGuard([UserRole.ADMIN]))
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
   @Get()
   async findAll(
     @Query('page') page?: string,
@@ -40,7 +40,7 @@ export class UsersController {
     return this.usersService.findAll(pageNumber, limitNumber);
   }
 
-  @UseGuards(AuthenticationGuard,AuthorizeGuard([UserRole.ADMIN]))
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
   @Get(':id')
   async findOneById(@Param('id') id: string): Promise<User> {
     const user = await this.usersService.findOneById(id);
@@ -48,20 +48,32 @@ export class UsersController {
     return user;
   }
 
-  @UseGuards(AuthenticationGuard,AuthorizeGuard([UserRole.ADMIN]))
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
   @Delete(':id')
   async deleteById(@Param('id') id: string): Promise<{ message: string }> {
     const message = await this.usersService.deleteById(id);
     return { message };
   }
 
-  @UseGuards(AuthenticationGuard,AuthorizeGuard([UserRole.ADMIN]))
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
   @Patch(':id/verification')
   async toggleVerification(
     @Param('id') id: string,
     @Body() dto: ToggleVerificationBadgeDto,
   ): Promise<User> {
     return this.usersService.toggleVerificationBadge(id, dto);
+  }
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
+  @Patch('make-admin/:id')
+  async makeAdmin(@Param('id') id: string) {
+    return this.usersService.makeAdminById(id);
+  }
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.CUSTOMER_SERVICE]))
+  @Patch('make-customer-service/:id')
+  async makeCustomerService(@Param('id') id: string) {
+    return this.usersService.makeCustomerServiceById(id);
   }
 
 }

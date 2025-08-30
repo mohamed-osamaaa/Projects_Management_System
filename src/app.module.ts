@@ -27,6 +27,7 @@ import {
 } from './utils/middlewares/currentUser.middleware';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ProjectDocumentsModule } from './project-documents/project-documents.module';
+import { SupportTicketModule } from './support-ticket/support-ticket.module';
 
 @Module({
   imports: [
@@ -52,7 +53,8 @@ import { ProjectDocumentsModule } from './project-documents/project-documents.mo
     InspectionAppointmentModule,
     ChatModule,
     NotificationsModule,
-    ProjectDocumentsModule
+    ProjectDocumentsModule,
+    SupportTicketModule
   ],
   controllers: [AppController],
   providers: [

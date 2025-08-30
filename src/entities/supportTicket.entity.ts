@@ -32,6 +32,5 @@ export class SupportTicket {
   @ManyToOne(() => User, (user) => user.tickets)
   user: User;
 
-  @ManyToOne(() => User, { nullable: true })
-  assignedTo: User; // customer support handling the ticket
+
 }

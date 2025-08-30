@@ -1,5 +1,6 @@
 import { User } from 'src/entities/user.entity';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { UserRole } from 'src/utils/enums/userRoles.enum';
 import {
     FindManyOptions,
     Repository,
@@ -131,6 +132,31 @@ export class UsersService {
             return updatedUser;
         } catch (error) {
             throw new InternalServerErrorException('Failed to update verification badge');
+        }
+    }
+
+
+    async makeAdminById(userId: string): Promise<User> {
+        try {
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            if (!user) throw new NotFoundException('User not found');
+
+            user.role = UserRole.ADMIN;
+            return await this.userRepository.save(user);
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to make user Admin');
+        }
+    }
+
+    async makeCustomerServiceById(userId: string): Promise<User> {
+        try {
+            const user = await this.userRepository.findOne({ where: { id: userId } });
+            if (!user) throw new NotFoundException('User not found');
+
+            user.role = UserRole.CUSTOMER_SERVICE;
+            return await this.userRepository.save(user);
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to make user Customer Service');
         }
     }
 }

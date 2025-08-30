@@ -1,0 +1,27 @@
+meta {
+  name: Get All Tickets
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:5030/support/tickets
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyMjViNzRhLWY3MWEtNDMxYy05N2U0LWUwZGVjZTM2NjRiZSIsInJvbGUiOiJjdXN0b21lcl9zZXJ2aWNlIiwiaWF0IjoxNzU2NTMyNzM5LCJleHAiOjE3NTY2MTkxMzl9.cTb6rbE-0ySGV7JP2UQOxiabfK175_5cZKj2Riapdak
+}
+
+body:json {
+  {
+    "subject": "Issue with login",
+    "description": "Unable to login with correct credentials"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

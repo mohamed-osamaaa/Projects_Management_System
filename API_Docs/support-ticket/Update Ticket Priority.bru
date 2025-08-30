@@ -1,0 +1,26 @@
+meta {
+  name: Update Ticket Priority
+  type: http
+  seq: 4
+}
+
+patch {
+  url: http://localhost:5030/support/tickets/f11c157a-ff69-4800-b71a-c26698fbc995/priority
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMyMjViNzRhLWY3MWEtNDMxYy05N2U0LWUwZGVjZTM2NjRiZSIsInJvbGUiOiJjdXN0b21lcl9zZXJ2aWNlIiwiaWF0IjoxNzU2NTMyNzM5LCJleHAiOjE3NTY2MTkxMzl9.cTb6rbE-0ySGV7JP2UQOxiabfK175_5cZKj2Riapdak
+}
+
+body:json {
+  {
+    "priority": "high"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}
