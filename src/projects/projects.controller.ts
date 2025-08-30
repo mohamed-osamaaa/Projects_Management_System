@@ -51,9 +51,15 @@ export class ProjectsController {
     @Query('clientId') clientId?: string,
     @Query('companyId') companyId?: string,
     @Query('startDate') startDate?: string,
-    @Query('endDate') endDate?: string
-  ): Promise<Project[]> {
-    return this.projectsService.findAll({ status, clientId, companyId, startDate, endDate });
+    @Query('endDate') endDate?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+  ) {
+    return this.projectsService.findAll(
+      { status, clientId, companyId, startDate, endDate },
+      Number(page),
+      Number(limit),
+    );
   }
 
   @UseGuards(AuthenticationGuard)

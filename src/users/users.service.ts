@@ -32,6 +32,13 @@ export class UsersService {
 
             const users = await this.userRepository
                 .createQueryBuilder('user')
+                .leftJoinAndSelect('user.company', 'company')
+                .leftJoinAndSelect('user.projects', 'projects')
+                .leftJoinAndSelect('user.messages', 'messages')
+                .leftJoinAndSelect('user.tickets', 'tickets')
+                .leftJoinAndSelect('user.documents', 'documents')
+                .leftJoinAndSelect('user.notifications', 'notifications')
+                .leftJoinAndSelect('user.inspections', 'inspections')
                 .where('LOWER(user.name) LIKE :name', {
                     name: `%${name.toLowerCase()}%`,
                 })
@@ -43,6 +50,7 @@ export class UsersService {
             throw new InternalServerErrorException('Failed to search users by name');
         }
     }
+
 
     async findAll(page?: number, limit?: number): Promise<{ data: User[]; total: number }> {
         try {

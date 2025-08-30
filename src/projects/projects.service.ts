@@ -50,18 +50,23 @@ export class ProjectsService {
         }
     }
 
-    async findAll(filters?: {
-        status?: string;
-        clientId?: string;
-        companyId?: string;
-        startDate?: string;
-        endDate?: string;
-    }): Promise<Project[]> {
+    async findAll(
+        filters?: {
+            status?: string;
+            clientId?: string;
+            companyId?: string;
+            startDate?: string;
+            endDate?: string;
+        },
+        page: number = 1,
+        limit: number = 10,
+    ) {
         try {
             const where: any = {};
 
             if (filters?.status) where.status = filters.status;
             if (filters?.clientId) where.client = { id: filters.clientId };
+            if (filters?.companyId) where.company = { id: filters.companyId };
             if (filters?.startDate && filters?.endDate) {
                 where.deadline = Between(
                     new Date(filters.startDate),
@@ -69,14 +74,29 @@ export class ProjectsService {
                 );
             }
 
-            return this.projectRepo.find({
+            const [data, total] = await this.projectRepo.findAndCount({
                 where,
                 relations: ['client', 'offers', 'milestones'],
+                skip: (page - 1) * limit,
+                take: limit,
             });
+
+            const totalPages = Math.ceil(total / limit);
+
+            return {
+                data,
+                total,
+                page,
+                limit,
+                totalPages,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1,
+            };
         } catch (error) {
             throw new InternalServerErrorException(error.message);
         }
     }
+
 
     async findOne(id: string): Promise<Project> {
         const project = await this.projectRepo.findOne({

@@ -1,0 +1,26 @@
+meta {
+  name: Get All Projects
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:5030/projects?page=2&limit=10&status=completed&clientId=d8b13976-8d59-4dbf-aacc-cfe92f15661b
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 2
+  limit: 10
+  status: completed
+  clientId: d8b13976-8d59-4dbf-aacc-cfe92f15661b
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkwOWFhZjljLWQwYWUtNDIyNC05NzdhLTgwNTQ3NTVlNDMwOSIsInJvbGUiOiJlbmdpbmVlciIsImlhdCI6MTc1NjU2NTI3OSwiZXhwIjoxNzU2NjUxNjc5fQ.GV684RfgE5PFJVSpjB-CkiCTaXnjWeyhPIZTAYIvlII
+}
+
+settings {
+  encodeUrl: true
+}
