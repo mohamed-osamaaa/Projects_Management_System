@@ -1,0 +1,27 @@
+meta {
+  name: Create content
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:5030/content
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY4YzQ2NmUwLTEwM2YtNDE3YS1iNThiLTY0MjcyYzg3ZmExZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjU0MTA3MSwiZXhwIjoxNzU2NjI3NDcxfQ.ChbyeXIFqh933DlklvDutuvuBYrwHXY1EtEqBXrgWeo
+}
+
+body:json {
+  {
+    "type": "about_section_1",
+    "content": "This is the about_section_1 content."
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}
