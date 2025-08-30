@@ -1,5 +1,6 @@
 import { SupportTicket } from 'src/entities/supportTicket.entity';
 import { User } from 'src/entities/user.entity';
+import { NotificationsService } from 'src/notifications/notifications.service';
 import { Repository } from 'typeorm';
 
 import {
@@ -20,6 +21,8 @@ export class SupportTicketsService {
 
         @InjectRepository(User)
         private usersRepo: Repository<User>,
+
+        private notificationsService: NotificationsService,
     ) { }
 
     async create(dto: CreateTicketDto, userId: string) {
@@ -52,7 +55,14 @@ export class SupportTicketsService {
             if (!ticket) throw new NotFoundException('Ticket not found');
 
             ticket.status = dto.status;
-            return await this.ticketsRepo.save(ticket);
+            const updatedTicket = await this.ticketsRepo.save(ticket);
+
+            await this.notificationsService.createNotification(
+                ticket.user.id,
+                `تم تغيير حالة التذكرة إلى ${dto.status}.`
+            );
+
+            return updatedTicket;
         } catch (err) {
             throw err;
         }
@@ -64,7 +74,14 @@ export class SupportTicketsService {
             if (!ticket) throw new NotFoundException('Ticket not found');
 
             ticket.priority = dto.priority;
-            return await this.ticketsRepo.save(ticket);
+            const updatedTicket = await this.ticketsRepo.save(ticket);
+
+            await this.notificationsService.createNotification(
+                ticket.user.id,
+                `تم تغيير أولوية التذكرة إلى ${dto.priority}.`
+            );
+
+            return updatedTicket;
         } catch (err) {
             throw err;
         }

@@ -184,4 +184,31 @@ export class PaymentsService {
         }
     }
 
+
+    async updatePaymentStatus(
+        paymentId: string,
+        status: PaymentStatus,
+    ): Promise<Payment> {
+        try {
+            const payment = await this.paymentRepo.findOne({
+                where: { id: paymentId },
+                relations: ['milestone', 'paymentBy', 'paymentTo', 'milestone.project', 'milestone.project.client'],
+            });
+            if (!payment) throw new NotFoundException(`Payment ${paymentId} not found`);
+
+            payment.milestone.paymentStatus = status;
+            await this.milestoneRepo.save(payment.milestone);
+
+            await this.notificationsService.createNotification(
+                payment.milestone.project.client.id,
+                `تم تعديل حالة الدفع للمعلم ${payment.milestone.title} بواسطة الادمن.`
+            );
+
+            return payment;
+        } catch (error) {
+            throw new InternalServerErrorException(error.message);
+        }
+    }
+
+
 }

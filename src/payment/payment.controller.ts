@@ -1,3 +1,4 @@
+import { PaymentStatus } from 'src/utils/enums/paymentStatus.enum';
 import { UserRole } from 'src/utils/enums/userRoles.enum';
 import { AuthenticationGuard } from 'src/utils/guards/authentication.guard';
 import { AuthorizeGuard } from 'src/utils/guards/authorization.guard';
@@ -7,6 +8,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -18,6 +20,41 @@ import { PaymentsService } from './payment.service';
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) { }
+
+
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
+  @Get('/all')
+  async getAllPayments() {
+    try {
+      return await this.paymentsService.findAll();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.COMPANY, UserRole.CLIENT]))
+  @Get('/my-payments')
+  async getMyPayments(@Req() req) {
+    try {
+      return await this.paymentsService.findMyPayments(
+        req.currentUser.id,
+        req.currentUser.role
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
+  @Get('/stats')
+  async getStats() {
+    try {
+      return await this.paymentsService.getStats();
+    } catch (error) {
+      throw error;
+    }
+  }
 
   @UseGuards(AuthenticationGuard)
   @Post(':milestoneId')
@@ -64,37 +101,12 @@ export class PaymentsController {
   //    return { received: true };
   // }
 
-
   @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
-  @Get('/all')
-  async getAllPayments() {
-    try {
-      return await this.paymentsService.findAll();
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.COMPANY, UserRole.CLIENT]))
-  @Get('/my-payments')
-  async getMyPayments(@Req() req) {
-    try {
-      return await this.paymentsService.findMyPayments(
-        req.currentUser.id,
-        req.currentUser.role
-      );
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN]))
-  @Get('/stats')
-  async getStats() {
-    try {
-      return await this.paymentsService.getStats();
-    } catch (error) {
-      throw error;
-    }
+  @Patch('update-status/:id')
+  async updateStatus(
+    @Param('id') id: string,
+    @Body('status') status: PaymentStatus,
+  ) {
+    return this.paymentsService.updatePaymentStatus(id, status);
   }
 }

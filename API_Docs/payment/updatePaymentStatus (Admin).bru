@@ -1,0 +1,26 @@
+meta {
+  name: updatePaymentStatus (Admin)
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:5030/payments/update-status/3f1723cf-e7f0-4842-8b75-ce86e1eacb80
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY4YzQ2NmUwLTEwM2YtNDE3YS1iNThiLTY0MjcyYzg3ZmExZSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1NjUzODU3MCwiZXhwIjoxNzU2NjI0OTcwfQ._6usU3y3P6_S1fGfoZnp82Yv6PHtlNR6Mxnrjzab5M8
+}
+
+body:json {
+  {
+    "status": "delayed"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}
