@@ -53,7 +53,7 @@ export class SupportTicketsController {
   }
 
 
-  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.CUSTOMER_SERVICE]))
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN, UserRole.CUSTOMER_SERVICE]))
   @Patch(':id/priority')
   async updatePriority(@Param('id') id: string, @Body() dto: UpdateTicketPriorityDto) {
     try {

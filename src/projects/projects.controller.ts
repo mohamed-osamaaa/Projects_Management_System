@@ -100,7 +100,7 @@ export class ProjectsController {
     return this.projectsService.update(id, dto, user.id, user.role);
   }
 
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN, UserRole.COMPANY, UserRole.ENGINEER]))
   @Patch(':id/status')
   async updateProjectStatus(
     @Param('id') id: string,
