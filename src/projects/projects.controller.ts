@@ -6,6 +6,7 @@ import { AuthorizeGuard } from 'src/utils/guards/authorization.guard';
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Param,
@@ -34,7 +35,7 @@ export class ProjectsController {
   ): Promise<Project> {
     const user = req.currentUser;
 
-    if (user.role !== UserRole.CLIENT && user.role !== UserRole.ADMIN) {
+    if (user.role !== UserRole.CLIENT) {
       throw new ForbiddenException('You are not allowed to create a project');
     }
 
@@ -96,12 +97,7 @@ export class ProjectsController {
     @Req() req
   ): Promise<Project> {
     const user = req.currentUser;
-    const project = await this.projectsService.findOne(id);
-
-    if (user.role !== UserRole.ADMIN && user.id !== project.client.id) {
-      throw new ForbiddenException('You are not allowed to update this project');
-    }
-    return this.projectsService.update(id, dto);
+    return this.projectsService.update(id, dto, user.id, user.role);
   }
 
   @UseGuards(AuthenticationGuard)
@@ -112,6 +108,18 @@ export class ProjectsController {
   ): Promise<Project> {
     return this.projectsService.updateStatus(id, dto);
   }
+
+
+  @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.ADMIN, UserRole.CLIENT]))
+  @Delete(':id')
+  async removeProject(
+    @Param('id') id: string,
+    @Req() req
+  ): Promise<{ message: string }> {
+    const user = req.currentUser;
+    return this.projectsService.remove(id, user.id, user.role);
+  }
+
 
   @UseGuards(AuthenticationGuard, AuthorizeGuard([UserRole.CLIENT]))
   @Patch(':projectId/republish')

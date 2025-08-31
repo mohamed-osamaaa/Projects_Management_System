@@ -1,6 +1,7 @@
 import { Project } from 'src/entities/project.entity';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { ProjectStatus } from 'src/utils/enums/projectStatus.enum';
+import { UserRole } from 'src/utils/enums/userRoles.enum';
 import {
     checkProjectExpired,
 } from 'src/utils/helpers/checkProjectExpired.helpers';
@@ -107,13 +108,27 @@ export class ProjectsService {
         return project;
     }
 
-    async update(id: string, dto: UpdateProjectDto): Promise<Project> {
+    async update(id: string, dto: UpdateProjectDto, clientId?: string, role?: UserRole): Promise<Project> {
         await checkProjectExpired(this.projectRepo, id);
 
-        const project = await this.findOne(id);
+        const project = await this.projectRepo.findOne({
+            where: { id },
+            relations: ['client'],
+        });
+
+        if (!project) {
+            throw new NotFoundException(`Project ${id} not found`);
+        }
+
+        if (role !== UserRole.ADMIN && project.client.id !== clientId) {
+            throw new ForbiddenException('You are not allowed to update this project');
+        }
+
         Object.assign(project, dto);
+
         return this.projectRepo.save(project);
     }
+
 
     async updateStatus(id: string, dto: UpdateProjectStatusDto): Promise<Project> {
         try {
@@ -156,6 +171,34 @@ export class ProjectsService {
             where: { inspections: { engineer: { id: engineerId } } },
         });
     }
+
+    async remove(id: string, clientId: string, role: UserRole): Promise<{ message: string }> {
+        const project = await this.projectRepo.findOne({
+            where: { id },
+            relations: ['client'],
+        });
+
+        if (!project) {
+            throw new NotFoundException(`Project ${id} not found`);
+        }
+
+        if (role !== UserRole.ADMIN && project.client.id !== clientId) {
+            throw new ForbiddenException('You are not allowed to delete this project');
+        }
+
+        await this.projectRepo.remove(project);
+
+        await this.notificationsService.createNotification(
+            project.client.id,
+            role === UserRole.ADMIN
+                ? 'تم حذف المشروع بواسطة الادمن.'
+                : 'تم حذف مشروعك بنجاح.'
+        );
+
+        return { message: 'Project deleted successfully' };
+    }
+
+
 
     async republish(
         projectId: string,
