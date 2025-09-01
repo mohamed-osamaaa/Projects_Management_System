@@ -106,8 +106,8 @@ This backend powers a **multi-tenant construction management platform**:
 * **ORM & Database**: TypeORM 0.3 + MySQL
 * **Auth & Validation**: JWT, class-validator, class-transformer
 * **Integrations**: Stripe, Cloudinary
-* **Security**: Helmet, CORS
-* **Testing**: Jest, Supertest, Rate Limiting
+* **Security**: Helmet, CORS, Rate Limiting
+* **Testing**: Jest, Supertest
 
 ---
 
@@ -130,7 +130,7 @@ Create `.env` and `.env.test`:
 
 ```env
 # Server
-PORT=3000
+PORT=5030
 
 # Database
 DB_HOST=localhost
