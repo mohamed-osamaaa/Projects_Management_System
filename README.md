@@ -155,7 +155,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 ## 📖 API Documentation
 
-* API collections available in `API_Docs/` (Bruno/Postman format).
+* API collections available in `API_Docs/` (Bruno format).
 * Grouped by module for easy testing.
 
 ---
