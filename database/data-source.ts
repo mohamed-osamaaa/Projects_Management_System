@@ -1,10 +1,10 @@
-import { config } from 'dotenv';
+import * as dotenv from 'dotenv';
 import {
   DataSource,
   DataSourceOptions,
 } from 'typeorm';
 
-config();
+dotenv.config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env' });
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
@@ -13,11 +13,17 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/database/migrations/*.js'],
-  synchronize: false,
+  entities:
+    process.env.NODE_ENV === 'test' ? ['src/**/*.entity.ts'] : ['dist/**/*.entity.js'],
+  migrations:
+    process.env.NODE_ENV === 'test'
+      ? []
+      : ['dist/database/migrations/*.js'],
+  synchronize: process.env.NODE_ENV === 'test' ? true : false,
+  dropSchema: process.env.NODE_ENV === 'test' ? true : false,
+
 };
 
 const dataSource = new DataSource(dataSourceOptions);
-dataSource.initialize();
+// dataSource.initialize();
 export default dataSource;

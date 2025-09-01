@@ -1,11 +1,13 @@
 module.exports = {
     moduleFileExtensions: ['js', 'json', 'ts'],
-    rootDir: '.',
+    rootDir: '../',
     testEnvironment: 'node',
     transform: {
-        '^.+\\.(t|j)s$': 'ts-jest',
+        '^.+\\.ts$': 'ts-jest',
     },
+    testRegex: '.*\\.e2e-spec\\.ts$',
     moduleNameMapper: {
         '^src/(.*)$': '<rootDir>/src/$1',
+        '^database/(.*)$': '<rootDir>/database/$1',
     },
 };
