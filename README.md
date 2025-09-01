@@ -1,22 +1,22 @@
 # 🏗️ Construction Projects Platform — Backend (NestJS)
 
-A **production-ready backend** for managing construction projects, built with **NestJS, TypeORM, and MySQL**. This platform supports multiple roles — **Clients, Companies, Engineers and Admin** — and provides APIs for project lifecycle, company offers, inspections, chat, payments, documents, notifications, and dashboards.
+A **production-ready backend** for managing construction projects, built with **NestJS, TypeORM, and MySQL**. This platform supports multiple roles — **Clients, Companies, Engineers, and Admins** — and provides APIs for the project lifecycle, company offers, inspections, chat, payments, documents, notifications, and dashboards.
 
 ---
 
 ## 📑 Table of Contents
 
-* [Project Overview](#project-overview)
-* [Main Features](#main-features)
-* [Tech Stack](#tech-stack)
-* [Database Design](#database-design)
-* [Environment Variables](#environment-variables)
-* [API Documentation](#api-documentation)
-* [Local Development](#local-development)
-* [Deployment](#deployment)
-* [Testing](#testing)
-* [Folder Structure](#folder-structure)
-* [Notes & Limitations](#notes--limitations)
+* [Project Overview](#-project-overview)
+* [Main Features](#-main-features)
+* [Tech Stack](#%EF%B8%8F-tech-stack)
+* [Database Design](#%EF%B8%8F-database-design)
+* [Environment Variables](#%EF%B8%8F-environment-variables)
+* [API Documentation](#-api-documentation)
+* [Local Development](#%EF%B8%8F-local-development)
+* [Deployment](#-deployment)
+* [Testing](#-testing)
+* [Folder Structure](#-folder-structure)
+* [Notes & Limitations](#%EF%B8%8F-notes--limitations)
 
 ---
 
@@ -27,14 +27,14 @@ This backend powers a **multi-tenant construction management platform**:
 * **Clients**: create/manage projects, receive company offers, schedule inspections, chat, attach documents, track payments and milestones.
 * **Companies**: submit offers, manage milestones, receive payments, and track inspections.
 * **Engineers**: assigned to inspections and manage tasks.
-* **Admins**: oversee platform, moderate content, adjust statuses, and access global stats.
+* **Admins**: oversee the platform, moderate content, adjust statuses, and access global stats.
 
 🔑 **Key modules under `src/`:**
 
 * `auth/`, `users/`, `companies/`, `projects/`, `offers/`, `milestones/`, `inspection-appointment/`, `chat/`, `project-documents/`, `payment/`, `notifications/`, `dashboards/`, `support-ticket/`, `static-content/`
 * Entities: `src/entities/`
 * Migrations: `database/migrations/`
-* API collections: `API_Docs/` (Bruno format)
+* API collections: `API_Docs/` (Bruno/Postman format)
 
 ---
 
@@ -120,7 +120,7 @@ Core entities & relations:
 * **Project**: client, offers, milestones, inspections, chat, documents
 * **Other Entities**: Offer, Milestone, Payment, InspectionAppointment, Chat/Message, ProjectDocument, Notification, SupportTicket, StaticContent
 
-Migrations located in `database/migrations/`
+Migrations are located in `database/migrations/`
 
 ---
 
@@ -220,4 +220,3 @@ test/          # E2E tests
 ---
 
 ❤️ With love, Mohamed Osama
-
