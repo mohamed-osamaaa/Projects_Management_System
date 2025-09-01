@@ -1,98 +1,223 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🏗️ Construction Projects Platform — Backend (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A **production-ready backend** for managing construction projects, built with **NestJS, TypeORM, and MySQL**. This platform supports multiple roles — **Clients, Companies, Engineers and Admin** — and provides APIs for project lifecycle, company offers, inspections, chat, payments, documents, notifications, and dashboards.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## 📑 Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+* [Project Overview](#project-overview)
+* [Main Features](#main-features)
+* [Tech Stack](#tech-stack)
+* [Database Design](#database-design)
+* [Environment Variables](#environment-variables)
+* [API Documentation](#api-documentation)
+* [Local Development](#local-development)
+* [Deployment](#deployment)
+* [Testing](#testing)
+* [Folder Structure](#folder-structure)
+* [Notes & Limitations](#notes--limitations)
 
-## Project setup
+---
 
-```bash
-$ npm install
+## 📘 Project Overview
+
+This backend powers a **multi-tenant construction management platform**:
+
+* **Clients**: create/manage projects, receive company offers, schedule inspections, chat, attach documents, track payments and milestones.
+* **Companies**: submit offers, manage milestones, receive payments, and track inspections.
+* **Engineers**: assigned to inspections and manage tasks.
+* **Admins**: oversee platform, moderate content, adjust statuses, and access global stats.
+
+🔑 **Key modules under `src/`:**
+
+* `auth/`, `users/`, `companies/`, `projects/`, `offers/`, `milestones/`, `inspection-appointment/`, `chat/`, `project-documents/`, `payment/`, `notifications/`, `dashboards/`, `support-ticket/`, `static-content/`
+* Entities: `src/entities/`
+* Migrations: `database/migrations/`
+* API collections: `API_Docs/` (Bruno format)
+
+---
+
+## 🚀 Main Features
+
+### 🔐 Authentication & Authorization
+
+* JWT-based auth with roles: `client`, `company`, `engineer`, `customer_service`, `admin`
+* Role-guarded endpoints & ownership checks
+
+### 📂 Project Lifecycle
+
+* CRUD operations with pagination & ownership checks
+* Statuses: `pending`, `in_progress`, `under_review`, `completed`, `paused`, `canceled`, `expired`, `republished`
+* Linked milestones & services
+
+### 💼 Company Offers
+
+* Create/update/delete offers
+* Statuses: `pending`, `accepted`, `rejected`
+* Expiry checks for old projects
+
+### 🛠️ Site Visit Scheduling (Inspections)
+
+* Schedule inspections & assign engineers
+* Notifications on changes
+* Status management
+
+### 💬 Chat System
+
+* Project-specific chat (Client ↔ Company ↔ Engineer)
+* Supports messages with attachments
+* **Cloudinary integration** for media
+
+### 💳 Payment System
+
+* **Stripe Checkout integration**
+* Payments linked to milestones
+* Admin override capability
+* Full audit trail
+
+### 📎 Attachments & Documents
+
+* Upload/download via API (Cloudinary storage)
+* Metadata support
+* Ownership restrictions on edit/delete
+
+### 📊 Dashboards & Profiles
+
+* Role-specific dashboards
+* KPIs: project counts, revenue, upcoming inspections
+
+### ⚙️ Settings & Notifications
+
+* Push/In-app notifications
+* User preferences management
+
+### 🛠️ Admin Tools
+
+* Full control over projects, users, payments
+* Force status override
+* Verification badge management
+
+---
+
+## 🛠️ Tech Stack
+
+* **Backend Framework**: NestJS 11 (TypeScript 5)
+* **ORM & Database**: TypeORM 0.3 + MySQL
+* **Auth & Validation**: JWT, class-validator, class-transformer
+* **Integrations**: Stripe, Cloudinary
+* **Security**: Helmet, CORS
+* **Testing**: Jest, Supertest, Rate Limiting
+
+---
+
+## 🗄️ Database Design
+
+Core entities & relations:
+
+* **User**: owns company, belongs to company as engineer, projects, messages, tickets, documents, notifications, inspections, paymentsMade
+* **Company**: owner, engineers, offers, milestones, paymentsReceived
+* **Project**: client, offers, milestones, inspections, chat, documents
+* **Other Entities**: Offer, Milestone, Payment, InspectionAppointment, Chat/Message, ProjectDocument, Notification, SupportTicket, StaticContent
+
+Migrations located in `database/migrations/`
+
+---
+
+## ⚙️ Environment Variables
+
+Create `.env` and `.env.test`:
+
+```env
+# Server
+PORT=3000
+
+# Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=secret
+DB_DATABASE=construction_db
+
+# Auth
+ACCESS_TOKEN_SECRET_KEY=supersecret
+
+# Stripe
+STRIPE_SECRET_KEY=your_stripe_key
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-## Compile and run the project
+---
+
+## 📖 API Documentation
+
+* API collections available in `API_Docs/` (Bruno/Postman format).
+* Grouped by module for easy testing.
+
+---
+
+## 🖥️ Local Development
 
 ```bash
-# development
-$ npm run start
+npm install
+# Configure .env
+npm run migration:run
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# For production
+npm run build
+npm run start:prod
 ```
 
-## Run tests
+🔒 CORS enabled by default; adjust for production.
+
+---
+
+## 🚀 Deployment
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run build
+node dist/main.js
+npm run migration:run
 ```
 
-## Deployment
+* Enable **Stripe webhook** in production
+* Configure **CORS** for frontend origins
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 🧪 Testing
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+* **Unit tests**: `npm run test`
+* **E2E tests**: `npm run test:e2e`
+* **Coverage**: `npm run test:cov`
+
+Testing DB uses `NODE_ENV=test` with in-memory schema.
+
+---
+
+## 📂 Folder Structure
+
+```
+src/           # Entities, modules, utils
+database/      # Data source + migrations
+API_Docs/      # API collections
+test/          # E2E tests
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## ⚠️ Notes & Limitations
 
-Check out a few resources that may come in handy when working with NestJS:
+* Payment flow stores inline after Stripe Checkout for dev/demo; production should use **webhooks**
+* Global validation pipes & exception filters enabled
+* Cloudinary supports arbitrary file types
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+❤️ With love, Mohamed Osama
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
