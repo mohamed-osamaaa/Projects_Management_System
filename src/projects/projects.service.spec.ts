@@ -114,7 +114,7 @@ describe('ProjectsService', () => {
       );
     });
 
-    it('should throw InternalServerErrorException if status invalid', async () => {
+    it('should throw InternalServerErrorException if updateStatus fails', async () => {
       const dto = { status: 'INVALID' as any };
       jest.spyOn(service, 'findOne').mockResolvedValue(mockProject as any);
 
