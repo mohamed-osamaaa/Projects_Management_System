@@ -194,7 +194,6 @@ npm run migration:run
 
 * **Unit tests**: `npm run test`
 * **E2E tests**: `npm run test:e2e`
-* **Coverage**: `npm run test:cov`
 
 Testing DB uses `NODE_ENV=test` with in-memory schema.
 
